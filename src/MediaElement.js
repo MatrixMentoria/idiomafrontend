@@ -24,7 +24,7 @@ export default class MediaElement extends Component {
       tracks = JSON.parse(props.tracks),
       sourceTags = [],
       tracksTags = [];
-
+    console.log("id -", props);
     for (let i = 0, total = sources.length; i < total; i++) {
       const source = sources[i];
       sourceTags.push(`<source src="${source.src}" type="${source.type}">`);
