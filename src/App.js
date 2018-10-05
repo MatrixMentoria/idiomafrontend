@@ -8,7 +8,21 @@ import img2 from "../src/imagens/bandeiradoseua.png";
 import img3 from "../src/imagens/hideicon.png";
 
 class App extends Component {
+  state = {
+    time: document.getElementsByTagName("audio")
+  };
+
+  retorna = event => {
+    this.state.time.player1_html5.currentTime =
+      this.state.time.player1_html5.currentTime - 3;
+  };
+
+  avanca = event => {
+    this.state.time.player1_html5.currentTime =
+      this.state.time.player1_html5.currentTime + 3;
+  };
   render() {
+    console.log("aqui - ", this.state.time);
     const sources = [
         {
           src: teste,
@@ -50,9 +64,9 @@ class App extends Component {
             }}
             align="center"
           >
-            <button class="btn btn-light" type="image">
+            <button className="btn btn-light" type="image">
               <i
-                class="fas fa-clipboard-check"
+                className="fas fa-clipboard-check"
                 style={{
                   width: "20px",
                   height: "20px",
@@ -60,9 +74,20 @@ class App extends Component {
                 }}
               />
             </button>
-            <button class="btn btn-light" type="image">
+            <button className="btn btn-light" type="image">
               <i
-                class="fas fa-backward"
+                className="fas fa-backward"
+                style={{
+                  width: "20px",
+                  height: "20px",
+                  left: "19%"
+                }}
+                onClick={this.retorna}
+              />
+            </button>
+            <button className="btn btn-light" type="image">
+              <i
+                className="fas fa-redo-alt"
                 style={{
                   width: "20px",
                   height: "20px",
@@ -70,9 +95,9 @@ class App extends Component {
                 }}
               />
             </button>
-            <button class="btn btn-light" type="image">
+            <button className="btn btn-light" type="image">
               <i
-                class="fas fa-redo-alt"
+                className="fas fa-cog"
                 style={{
                   width: "20px",
                   height: "20px",
@@ -80,24 +105,15 @@ class App extends Component {
                 }}
               />
             </button>
-            <button class="btn btn-light" type="image">
+            <button className="btn btn-light" type="image">
               <i
-                class="fas fa-cog"
+                className="fas fa-forward"
                 style={{
                   width: "20px",
                   height: "20px",
                   left: "19%"
                 }}
-              />
-            </button>
-            <button class="btn btn-light" type="image">
-              <i
-                class="fas fa-forward"
-                style={{
-                  width: "20px",
-                  height: "20px",
-                  left: "19%"
-                }}
+                onClick={this.avanca}
               />
             </button>
           </div>
@@ -132,7 +148,6 @@ class App extends Component {
             left: "45%",
             bottom: "60%"
           }}
-          onClick={this.getCurTime}
         />
         <input
           type="image"
