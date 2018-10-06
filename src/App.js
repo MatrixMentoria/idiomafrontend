@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import "./App.css";
 import MediaElement from "./MediaElement";
-import "./App.css";
 import img1 from "../src/imagens/bandeiradobrasil.png";
 import img2 from "../src/imagens/bandeiradoseua.png";
 import img3 from "../src/imagens/hideicon.png";
@@ -9,22 +8,6 @@ import img3 from "../src/imagens/hideicon.png";
 class App extends Component {
   state = {
     time: document.getElementsByTagName("audio")
-  };
-
-  retorna = event => {
-    this.state.time.player1_html5.currentTime =
-      this.state.time.player1_html5.currentTime - 3;
-  };
-
-  repete = event => {
-    this.state.time.player1_html5.pause();
-    this.state.time.player1_html5.currentTime = 0;
-    this.state.time.player1_html5.play();
-  };
-
-  avanca = event => {
-    this.state.time.player1_html5.currentTime =
-      this.state.time.player1_html5.currentTime + 3;
   };
 
   marcador = event => {
@@ -54,6 +37,31 @@ class App extends Component {
     }
 
     console.log(inicio, final); //teste de tempo do marcador
+  };
+
+  retorna = event => {
+    this.state.time.player1_html5.currentTime =
+      this.state.time.player1_html5.currentTime - 3;
+  };
+
+  atrasa = event => {
+    this.state.time.player1_html5.playbackRate = 0.5;
+  };
+
+  repete = event => {
+    this.state.time.player1_html5.pause();
+    this.state.time.player1_html5.currentTime = 0;
+    this.state.time.player1_html5.playbackRate = 1.0;
+    this.state.time.player1_html5.play();
+  };
+
+  normaliza = event => {
+    this.state.time.player1_html5.playbackRate = 1.0;
+  };
+
+  avanca = event => {
+    this.state.time.player1_html5.currentTime =
+      this.state.time.player1_html5.currentTime + 3;
   };
 
   render() {
@@ -113,13 +121,24 @@ class App extends Component {
             </button>
             <button className="btn btn-light" type="image">
               <i
-                className="fas fa-backward"
+                className="fas fa-fast-backward"
                 style={{
                   width: "20px",
                   height: "20px",
                   left: "19%"
                 }}
                 onClick={this.retorna}
+              />
+            </button>
+            <button className="btn btn-light" type="image">
+              <i
+                className="fas fa-backward"
+                style={{
+                  width: "20px",
+                  height: "20px",
+                  left: "19%"
+                }}
+                onClick={this.atrasa}
               />
             </button>
             <button className="btn btn-light" type="image">
@@ -135,17 +154,18 @@ class App extends Component {
             </button>
             <button className="btn btn-light" type="image">
               <i
-                className="fas fa-cog"
+                className="fas fa-play"
                 style={{
                   width: "20px",
                   height: "20px",
                   left: "19%"
                 }}
+                onClick={this.normaliza}
               />
             </button>
             <button className="btn btn-light" type="image">
               <i
-                className="fas fa-forward"
+                className="fas fa-fast-forward"
                 style={{
                   width: "20px",
                   height: "20px",
