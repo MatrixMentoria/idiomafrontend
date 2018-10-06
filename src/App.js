@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import "./App.css";
 import MediaElement from "./MediaElement";
 import "./App.css";
-import teste from "../src/Mac Miller - Best Day Ever.mp3";
 import img1 from "../src/imagens/bandeiradobrasil.png";
 import img2 from "../src/imagens/bandeiradoseua.png";
 import img3 from "../src/imagens/hideicon.png";
@@ -55,7 +54,7 @@ class App extends Component {
     console.log("aqui - ", this.state.time);
     const sources = [
         {
-          src: teste,
+          src: "https://www.talkenglish.com/audio871/audiote1/l23/practice/l23p2.mp3",
           type: "audio/mp3"
         }
       ],
