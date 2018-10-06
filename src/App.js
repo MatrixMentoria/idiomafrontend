@@ -21,6 +21,36 @@ class App extends Component {
     this.state.time.player1_html5.currentTime =
       this.state.time.player1_html5.currentTime + 3;
   };
+
+  marcador = event => {
+    var time = [];
+
+    time[0] = this.state.time.player1_html5.currentTime - 1;
+    time[1] = this.state.time.player1_html5.currentTime + 3;
+
+    this.calculoMarcador(time);
+  };
+
+  calculoMarcador = time => {
+    var ms, seg, min, hor, inicio, final;
+
+    for (var posicao = 0; posicao < 2; posicao++) {
+      ms = time[posicao] - Math.trunc(time[posicao]);
+      seg = Math.trunc(time[posicao]);
+
+      min = Math.trunc(seg / 60);
+      seg %= 60;
+
+      hor = Math.trunc(min / 60);
+      min %= 60;
+
+      if (posicao === 0) inicio = hor + ":" + min + ":" + seg;
+      if (posicao === 1) final = hor + ":" + min + ":" + seg;
+    }
+
+    console.log(inicio, final); //teste de tempo do marcador
+  };
+
   render() {
     console.log("aqui - ", this.state.time);
     const sources = [
@@ -71,6 +101,9 @@ class App extends Component {
                   width: "20px",
                   height: "20px",
                   left: "19%"
+                }}
+                onClick={event => {
+                  this.marcador();
                 }}
               />
             </button>
