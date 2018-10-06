@@ -16,6 +16,12 @@ class App extends Component {
       this.state.time.player1_html5.currentTime - 3;
   };
 
+  repete = event => {
+    this.state.time.player1_html5.pause();
+    this.state.time.player1_html5.currentTime = 0;
+    this.state.time.player1_html5.play();
+  };
+
   avanca = event => {
     this.state.time.player1_html5.currentTime =
       this.state.time.player1_html5.currentTime + 3;
@@ -54,7 +60,8 @@ class App extends Component {
     console.log("aqui - ", this.state.time);
     const sources = [
         {
-          src: "https://www.talkenglish.com/audio871/audiote1/l23/practice/l23p2.mp3",
+          src:
+            "https://www.talkenglish.com/audio871/audiote1/l23/practice/l23p2.mp3",
           type: "audio/mp3"
         }
       ],
@@ -101,9 +108,7 @@ class App extends Component {
                   height: "20px",
                   left: "19%"
                 }}
-                onClick={event => {
-                  this.marcador();
-                }}
+                onClick={this.marcador}
               />
             </button>
             <button className="btn btn-light" type="image">
@@ -125,6 +130,7 @@ class App extends Component {
                   height: "20px",
                   left: "19%"
                 }}
+                onClick={this.repete}
               />
             </button>
             <button className="btn btn-light" type="image">
