@@ -1,0 +1,77 @@
+.wrapper-content {
+  position: absolute;
+  left: 18%;
+  bottom: 85%;
+}
+
+#flag-brasil {
+  width: 50px;
+  position: absolute;
+  left: 45%;
+  bottom: 60%;
+}
+
+#flag-eua {
+  width: 50px;
+  position: absolute;
+  left: 45%;
+  bottom: 51%;
+}
+
+#hide-icon {
+  width: 50px;
+  position: absolute;
+  left: 45%;
+  bottom: 40%;
+}
+
+.card-english {
+  width: 350px;
+  height: 300px;
+  position: absolute;
+  left: 50%;
+  bottom: 30%;
+}
+
+.card-portuguese {
+  width: 350px;
+  height: 300px;
+  position: absolute;
+  left: 18%;
+  bottom: 30%;
+}
+
+.play-audio-buttons {
+  width: 788px;
+  height: 80px;
+  position: absolute;
+  left: 19%;
+  bottom: 72%;
+}
+
+.controls {
+  width: 20px;
+  height: 20px;
+  left: 19%;
+}
+
+.btn-go-back {
+  width: 200px;
+  position: absolute;
+  left: 19%;
+  bottom: 20%;
+}
+
+.btn-repeat {
+  width: 200px;
+  position: absolute;
+  left: 39%;
+  bottom: 20%;
+}
+
+.btn-go-for-repetitions {
+  width: 200px;
+  position: absolute;
+  left: 59%;
+  bottom: 20%;
+}

@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import "./App.css";
+import "./css/general.css";
 import MediaElement from "./MediaElement";
 import img1 from "../src/imagens/bandeiradobrasil.png";
 import img2 from "../src/imagens/bandeiradoseua.png";
@@ -90,13 +91,7 @@ class App extends Component {
     return (
       <div>
         <div>
-          <div
-            style={{
-              position: "absolute",
-              left: "18%",
-              bottom: "85%"
-            }}
-          >
+          <div className="wrapper-content">
             <MediaElement
               id="player1"
               mediaType="audio"
@@ -110,93 +105,36 @@ class App extends Component {
               tracks={JSON.stringify(tracks)}
             />
           </div>
-          <div
-            style={{
-              width: "788px",
-              height: "80px",
-              position: "absolute",
-              left: "19%",
-              bottom: "72%"
-            }}
-            align="center"
-          >
+          <div className="play-audio-buttons" align="center">
             <button className="btn btn-light" type="image">
               <i
-                className="fas fa-clipboard-check"
-                style={{
-                  width: "20px",
-                  height: "20px",
-                  left: "19%"
-                }}
+                className="fas fa-clipboard-check controls"
                 onClick={this.marcador}
               />
             </button>
             <button className="btn btn-light" type="image">
               <i
-                className="fas fa-fast-backward"
-                style={{
-                  width: "20px",
-                  height: "20px",
-                  left: "19%"
-                }}
+                className="fas fa-fast-backward controls"
                 onClick={this.retorna}
               />
             </button>
             <button className="btn btn-light" type="image">
-              <i
-                className="fas fa-backward"
-                style={{
-                  width: "20px",
-                  height: "20px",
-                  left: "19%"
-                }}
-                onClick={this.atrasa}
-              />
+              <i className="fas fa-backward controls" onClick={this.atrasa} />
+            </button>
+            <button className="btn btn-light" type="image">
+              <i className="fas fa-redo-alt controls" onClick={this.repete} />
+            </button>
+            <button className="btn btn-light" type="image">
+              <i className="fas fa-play controls" onClick={this.normaliza} />
             </button>
             <button className="btn btn-light" type="image">
               <i
-                className="fas fa-redo-alt"
-                style={{
-                  width: "20px",
-                  height: "20px",
-                  left: "19%"
-                }}
-                onClick={this.repete}
-              />
-            </button>
-            <button className="btn btn-light" type="image">
-              <i
-                className="fas fa-play"
-                style={{
-                  width: "20px",
-                  height: "20px",
-                  left: "19%"
-                }}
-                onClick={this.normaliza}
-              />
-            </button>
-            <button className="btn btn-light" type="image">
-              <i
-                className="fas fa-fast-forward"
-                style={{
-                  width: "20px",
-                  height: "20px",
-                  left: "19%"
-                }}
+                className="fas fa-fast-forward controls"
                 onClick={this.avanca}
               />
             </button>
           </div>
-          <div
-            className="card"
-            style={{
-              width: "350px",
-              height: "300px",
-              position: "absolute",
-              left: "18%",
-              bottom: "30%"
-            }}
-          >
+          <div className="card card-portuguese">
             <div className="card-body">
               <h5 className="card-title">Título do Texto em Português</h5>
               <h6 className="card-subtitle mb-2 text-muted">
@@ -212,46 +150,14 @@ class App extends Component {
         <input
           type="image"
           src={img1}
-          style={{
-            width: "50px",
-            position: "absolute",
-            left: "45%",
-            bottom: "60%"
-          }}
+          id="flag-brasil"
           onClick={this.formartarHora}
         />
-        <input
-          type="image"
-          src={img2}
-          style={{
-            width: "50px",
-            position: "absolute",
-            left: "45%",
-            bottom: "51%"
-          }}
-        />
-        <input
-          type="image"
-          src={img3}
-          style={{
-            width: "50px",
-            position: "absolute",
-            left: "45%",
-            bottom: "40%"
-          }}
-        />
+        <input type="image" src={img2} id="flag-eua" />
+        <input type="image" src={img3} id="hide-icon" />
 
         <div>
-          <div
-            className="card"
-            style={{
-              width: "350px",
-              height: "300px",
-              position: "absolute",
-              left: "50%",
-              bottom: "30%"
-            }}
-          >
+          <div className="card card-english">
             <div className="card-body">
               <h5 className="card-title">Título do Texto em Inglês</h5>
               <h6 className="card-subtitle mb-2 text-muted">Texto em Inglês</h6>
@@ -262,39 +168,15 @@ class App extends Component {
             </div>
           </div>
           <div>
-            <button
-              type="button"
-              className="btn btn-light"
-              style={{
-                width: "200px",
-                position: "absolute",
-                left: "19%",
-                bottom: "20%"
-              }}
-            >
+            <button type="button" className="btn btn-light btn-go-back">
               Voltar aos textos
             </button>
-            <button
-              type="button"
-              className="btn btn-light"
-              style={{
-                width: "200px",
-                position: "absolute",
-                left: "39%",
-                bottom: "20%"
-              }}
-            >
+            <button type="button" className="btn btn-light btn-repeat">
               Repetição do texto
             </button>
             <button
               type="button"
-              className="btn btn-light"
-              style={{
-                width: "200px",
-                position: "absolute",
-                left: "59%",
-                bottom: "20%"
-              }}
+              className="btn btn-light btn-go-for-repetitions"
               onClick={evet => {}}
             >
               Ir para repetições
