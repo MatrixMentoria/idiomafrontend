@@ -27,9 +27,53 @@ class App extends Component {
     console.log("aqui hora - ", this.state.hora);
   };
 
+  marcador = event => {
+    var time = [];
+
+    time[0] = this.state.time.player1_html5.currentTime - 1;
+    time[1] = this.state.time.player1_html5.currentTime + 3;
+
+    this.calculoMarcador(time);
+  };
+
+  calculoMarcador = time => {
+    var ms, seg, min, hor, inicio, final;
+
+    for (var posicao = 0; posicao < 2; posicao++) {
+      ms = time[posicao] - Math.trunc(time[posicao]);
+      seg = Math.trunc(time[posicao]);
+
+      min = Math.trunc(seg / 60);
+      seg %= 60;
+
+      hor = Math.trunc(min / 60);
+      min %= 60;
+
+      if (posicao === 0) inicio = hor + ":" + min + ":" + seg;
+      if (posicao === 1) final = hor + ":" + min + ":" + seg;
+    }
+
+    console.log(inicio, final); //teste de tempo do marcador
+  };
+
   retorna = event => {
     this.state.time.player1_html5.currentTime =
       this.state.time.player1_html5.currentTime - 3;
+  };
+
+  atrasa = event => {
+    this.state.time.player1_html5.playbackRate = 0.5;
+  };
+
+  repete = event => {
+    this.state.time.player1_html5.pause();
+    this.state.time.player1_html5.currentTime = 0;
+    this.state.time.player1_html5.playbackRate = 1.0;
+    this.state.time.player1_html5.play();
+  };
+
+  normaliza = event => {
+    this.state.time.player1_html5.playbackRate = 1.0;
   };
 
   avanca = event => {
@@ -102,11 +146,12 @@ class App extends Component {
                   height: "20px",
                   left: "19%"
                 }}
+                onClick={this.marcador}
               />
             </button>
             <button className="btn btn-light" type="image">
               <i
-                className="fas fa-backward"
+                className="fas fa-fast-backward"
                 style={{
                   width: "20px",
                   height: "20px",
@@ -117,27 +162,40 @@ class App extends Component {
             </button>
             <button className="btn btn-light" type="image">
               <i
+                className="fas fa-backward"
+                style={{
+                  width: "20px",
+                  height: "20px",
+                  left: "19%"
+                }}
+                onClick={this.atrasa}
+              />
+            </button>
+            <button className="btn btn-light" type="image">
+              <i
                 className="fas fa-redo-alt"
                 style={{
                   width: "20px",
                   height: "20px",
                   left: "19%"
                 }}
+                onClick={this.repete}
               />
             </button>
             <button className="btn btn-light" type="image">
               <i
-                className="fas fa-cog"
+                className="fas fa-play"
                 style={{
                   width: "20px",
                   height: "20px",
                   left: "19%"
                 }}
+                onClick={this.normaliza}
               />
             </button>
             <button className="btn btn-light" type="image">
               <i
-                className="fas fa-forward"
+                className="fas fa-fast-forward"
                 style={{
                   width: "20px",
                   height: "20px",
