@@ -1,15 +1,30 @@
 import React, { Component } from "react";
 import "./App.css";
 import MediaElement from "./MediaElement";
-import "./App.css";
-import teste from "../src/Mac Miller - Best Day Ever.mp3";
 import img1 from "../src/imagens/bandeiradobrasil.png";
 import img2 from "../src/imagens/bandeiradoseua.png";
 import img3 from "../src/imagens/hideicon.png";
+import axios from "../node_modules/axios";
 
 class App extends Component {
   state = {
-    time: document.getElementsByTagName("audio")
+    time: document.getElementsByTagName("audio"),
+    ms: 0,
+    s: 0,
+    min: 0,
+    h: 0,
+    hora: null,
+    audios: []
+  };
+
+  formartarHora = event => {
+    this.state.s = Math.trunc(this.state.time.player1_html5.currentTime);
+    this.state.min = Math.trunc(this.state.s / 60);
+    this.state.s = this.state.s % 60;
+    this.state.h = Math.trunc(this.state.min / 60);
+    this.state.Min = this.state.Min % 60;
+    this.state.hora = this.state.h + ":" + this.state.min + ":" + this.state.s;
+    console.log("aqui hora - ", this.state.hora);
   };
 
   retorna = event => {
@@ -21,11 +36,26 @@ class App extends Component {
     this.state.time.player1_html5.currentTime =
       this.state.time.player1_html5.currentTime + 3;
   };
+
+  buscarDados(id) {
+    return axios
+      .get("http://idiomabackend.herokuapp.com/audio/" + id)
+      .then(response => {
+        return response.data;
+      });
+  }
+
+  componentDidMount() {
+    axios.get("http://idiomabackend.herokuapp.com/audio/").then(result => {
+      const audios = result.data[0].link;
+      this.setState({ audios });
+    });
+  }
+
   render() {
-    console.log("aqui - ", this.state.time);
     const sources = [
         {
-          src: teste,
+          src: this.state.audios.toString(),
           type: "audio/mp3"
         }
       ],
@@ -148,6 +178,7 @@ class App extends Component {
             left: "45%",
             bottom: "60%"
           }}
+          onClick={this.formartarHora}
         />
         <input
           type="image"
@@ -224,6 +255,7 @@ class App extends Component {
                 left: "59%",
                 bottom: "20%"
               }}
+              onClick={evet => {}}
             >
               Ir para repetições
             </button>
