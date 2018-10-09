@@ -17,16 +17,6 @@ class App extends Component {
     audios: []
   };
 
-  formartarHora = event => {
-    this.state.s = Math.trunc(this.state.time.player1_html5.currentTime);
-    this.state.min = Math.trunc(this.state.s / 60);
-    this.state.s = this.state.s % 60;
-    this.state.h = Math.trunc(this.state.min / 60);
-    this.state.Min = this.state.Min % 60;
-    this.state.hora = this.state.h + ":" + this.state.min + ":" + this.state.s;
-    console.log("aqui hora - ", this.state.hora);
-  };
-
   marcador = event => {
     var time = [];
 
@@ -80,14 +70,6 @@ class App extends Component {
     this.state.time.player1_html5.currentTime =
       this.state.time.player1_html5.currentTime + 3;
   };
-
-  buscarDados(id) {
-    return axios
-      .get("http://idiomabackend.herokuapp.com/audio/" + id)
-      .then(response => {
-        return response.data;
-      });
-  }
 
   componentDidMount() {
     axios.get("http://idiomabackend.herokuapp.com/audio/").then(result => {
