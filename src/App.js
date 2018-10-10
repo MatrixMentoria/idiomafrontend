@@ -5,7 +5,7 @@ import MediaElement from "./MediaElement";
 import img1 from "../src/imagens/bandeiradobrasil.png";
 import img2 from "../src/imagens/bandeiradoseua.png";
 import img3 from "../src/imagens/hideicon.png";
-import axios from "../node_modules/axios";
+import axios from "axios";
 
 class App extends Component {
   state = {

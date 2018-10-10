@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-//import flvjs from 'flv.js';
-//import hlsjs from 'hls.js';
+import flvjs from "flv.js";
+//import hlsjs from "hls.js";
 import "mediaelement";
 
 // Import stylesheet and shims
@@ -72,7 +72,7 @@ export default class MediaElement extends Component {
       error: (media, node) => this.error(media, node)
     });
 
-    //window.flvjs = flvjs;
+    window.flvjs = flvjs;
     //window.Hls = hlsjs;
     this.setState({ player: new MediaElementPlayer(this.props.id, options) });
   }
