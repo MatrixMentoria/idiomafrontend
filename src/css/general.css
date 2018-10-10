@@ -6,48 +6,48 @@
 
 #flag-brasil {
   width: 50px;
-  position: absolute;
+  /* position: absolute;
   left: 45%;
-  bottom: 60%;
+  bottom: 60%; */
 }
 
 #flag-eua {
   width: 50px;
-  position: absolute;
+  margin-top: 15px;
+  /* position: absolute;
   left: 45%;
-  bottom: 51%;
+  bottom: 51%; */
 }
 
 #hide-icon {
   width: 50px;
+  /* margin-top: 15px; 
   position: absolute;
   left: 45%;
-  bottom: 40%;
+  bottom: 40%;*/
 }
 
 .card-english {
   width: 350px;
   height: 300px;
-  position: absolute;
-  left: 50%;
+  left: 0;
   bottom: 30%;
 }
 
 .card-portuguese {
   width: 350px;
   height: 300px;
-  position: absolute;
-  left: 18%;
+  left: 0;
   bottom: 30%;
 }
 
-.play-audio-buttons {
+/* .play-audio-buttons {
   width: 788px;
   height: 80px;
   position: absolute;
   left: 19%;
   bottom: 72%;
-}
+} */
 
 .controls {
   width: 20px;
@@ -74,4 +74,20 @@
   position: absolute;
   left: 59%;
   bottom: 20%;
+}
+
+.wrapper-row {
+  margin: 20px 0;
+  text-align: center;
+}
+
+.flag {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  margin-top: 5px;
+}
+
+.btn-text {
+  margin-bottom: 8px;
 }

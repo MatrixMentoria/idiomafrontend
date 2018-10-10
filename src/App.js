@@ -88,99 +88,125 @@ class App extends Component {
       ],
       config = {},
       tracks = {};
-    return (
-      <div>
-        <div>
-          <div className="wrapper-content">
-            <MediaElement
-              id="player1"
-              mediaType="audio"
-              preload="none"
-              controls
-              width="788"
-              height="360"
-              poster=""
-              sources={JSON.stringify(sources)}
-              options={JSON.stringify(config)}
-              tracks={JSON.stringify(tracks)}
-            />
-          </div>
-          <div className="play-audio-buttons" align="center">
-            <button className="btn btn-light" type="image">
-              <i
-                className="fas fa-clipboard-check controls"
-                onClick={this.marcador}
-              />
-            </button>
-            <button className="btn btn-light" type="image">
-              <i
-                className="fas fa-fast-backward controls"
-                onClick={this.retorna}
-              />
-            </button>
-            <button className="btn btn-light" type="image">
-              <i className="fas fa-backward controls" onClick={this.atrasa} />
-            </button>
-            <button className="btn btn-light" type="image">
-              <i className="fas fa-redo-alt controls" onClick={this.repete} />
-            </button>
-            <button className="btn btn-light" type="image">
-              <i className="fas fa-play controls" onClick={this.normaliza} />
-            </button>
-            <button className="btn btn-light" type="image">
-              <i
-                className="fas fa-fast-forward controls"
-                onClick={this.avanca}
-              />
-            </button>
-          </div>
-          <div className="card card-portuguese">
-            <div className="card-body">
-              <h5 className="card-title">Título do Texto em Português</h5>
-              <h6 className="card-subtitle mb-2 text-muted">
-                Texto em português
-              </h6>
-              <p className="card-text">
-                Some quick example text to build on the card title and make up
-                the bulk of the card's content.
-              </p>
-            </div>
-          </div>
-        </div>
-        <input
-          type="image"
-          src={img1}
-          id="flag-brasil"
-          onClick={this.formartarHora}
-        />
-        <input type="image" src={img2} id="flag-eua" />
-        <input type="image" src={img3} id="hide-icon" />
 
+    return (
+      <div className="container">
         <div>
-          <div className="card card-english">
-            <div className="card-body">
-              <h5 className="card-title">Título do Texto em Inglês</h5>
-              <h6 className="card-subtitle mb-2 text-muted">Texto em Inglês</h6>
-              <p className="card-text">
-                Some quick example text to build on the card title and make up
-                the bulk of the card's content.
-              </p>
+          <div className="row wrapper-row">
+            <div className="col-12 ">
+              <MediaElement
+                id="player1"
+                mediaType="audio"
+                preload="none"
+                controls
+                width="788"
+                height="360"
+                poster=""
+                sources={JSON.stringify(sources)}
+                options={JSON.stringify(config)}
+                tracks={JSON.stringify(tracks)}
+              />
             </div>
           </div>
-          <div>
-            <button type="button" className="btn btn-light btn-go-back">
-              Voltar aos textos
-            </button>
-            <button type="button" className="btn btn-light btn-repeat">
-              Repetição do texto
-            </button>
-            <button
-              type="button"
-              className="btn btn-light btn-go-for-repetitions"
-              onClick={evet => {}}
-            >
-              Ir para repetições
-            </button>
+          <div className="row wrapper-row">
+            <div className="col-12 " align="center">
+              <button className="btn btn-light" type="image">
+                <i
+                  className="fas fa-clipboard-check controls"
+                  onClick={this.marcador}
+                />
+              </button>
+              <button className="btn btn-light" type="image">
+                <i
+                  className="fas fa-fast-backward controls"
+                  onClick={this.retorna}
+                />
+              </button>
+              <button className="btn btn-light" type="image">
+                <i className="fas fa-backward controls" onClick={this.atrasa} />
+              </button>
+              <button className="btn btn-light" type="image">
+                <i className="fas fa-redo-alt controls" onClick={this.repete} />
+              </button>
+              <button className="btn btn-light" type="image">
+                <i className="fas fa-play controls" onClick={this.normaliza} />
+              </button>
+              <button className="btn btn-light" type="image">
+                <i
+                  className="fas fa-fast-forward controls"
+                  onClick={this.avanca}
+                />
+              </button>
+            </div>
+          </div>
+
+          <div className="row wrapper-row">
+            <div className="col-12 col-md-5 card card-portuguese">
+              <div className="card-body">
+                <h5 className="card-title">Título do Texto em Português</h5>
+                <h6 className="card-subtitle mb-2 text-muted">
+                  Texto em português
+                </h6>
+                <p className="card-text">
+                  Some quick example text to build on the card title and make up
+                  the bulk of the card's content.
+                </p>
+              </div>
+            </div>
+
+            <div className="col-12 col-md-2">
+              <div className="row flag">
+                <div className="col-12">
+                  <input
+                    type="image"
+                    src={img1}
+                    id="flag-brasil"
+                    onClick={this.formartarHora}
+                  />
+                </div>
+                <div className="col-12">
+                  <input type="image" src={img2} id="flag-eua" />
+                </div>
+                <div className="col-12">
+                  <input type="image" src={img3} id="hide-icon" />
+                </div>
+              </div>
+            </div>
+
+            <div className=" col-12 col-md-5 card card-english">
+              <div className="card-body">
+                <h5 className="card-title">Título do Texto em Inglês</h5>
+                <h6 className="card-subtitle mb-2 text-muted">
+                  Texto em Inglês
+                </h6>
+                <p className="card-text">
+                  Some quick example text to build on the card title and make up
+                  the bulk of the card's content.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div className="row wrapper-row">
+            <div className="col-12 col-md-4">
+              <button type="button" className="btn btn-light btn-text">
+                Voltar aos textos
+              </button>
+            </div>
+            <div className="col-12 col-md-4">
+              <button type="button" className="btn btn-light btn-text">
+                Repetição do texto
+              </button>
+            </div>
+            <div className="col-12 col-md-4">
+              <button
+                type="button"
+                className="btn btn-light btn-text "
+                onClick={evet => {}}
+              >
+                Ir para repetições
+              </button>
+            </div>
           </div>
         </div>
       </div>
