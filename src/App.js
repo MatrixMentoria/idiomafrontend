@@ -119,7 +119,7 @@ class App extends Component {
     });
   };
 
-  reproduzirMeioSegundoPorSegundo = event => {
+  diminuirVelocidadeAudio = event => {
     if (this.state.tempo[0].playbackRate === 1.0) {
       this.state.tempo[0].playbackRate = 0.9;
       const velocidade = "0.9x";
@@ -138,7 +138,7 @@ class App extends Component {
     }
   };
 
-  reproduzirUmSegundoPorSegundo = event => {
+  aumentarVelocidadeAudio = event => {
     if (this.state.tempo[0].playbackRate === 0.9) {
       this.state.tempo[0].playbackRate = 1.0;
 
@@ -242,7 +242,7 @@ class App extends Component {
             type="button"
             className="btn btn-light btn-text"
             id="menos"
-            onClick={this.reproduzirMeioSegundoPorSegundo}
+            onClick={this.diminuirVelocidadeAudio}
           >
             {" "}
             -{" "}
@@ -258,7 +258,7 @@ class App extends Component {
             type="button"
             className="btn btn-light btn-text"
             id="mais"
-            onClick={this.reproduzirUmSegundoPorSegundo}
+            onClick={this.aumentarVelocidadeAudio}
           >
             {" "}
             +{" "}
