@@ -1,198 +1,365 @@
 import React, { Component } from "react";
-import "./App.css";
-import "./css/general.css";
-import img1 from "../src/imagens/bandeiradobrasil.png";
-import img2 from "../src/imagens/bandeiradoseua.png";
-import img3 from "../src/imagens/hideicon.png";
+import ReactPlayer from "react-player";
+import "./css/App.css";
+import "./css/styles.css";
 import axios from "axios";
+import img1 from "./medias/bandeiradobrasil.png";
+import img2 from "./medias/bandeiradoseua.png";
+import img3 from "./medias/hideicon.png";
+import img4 from "./medias/retornar3s.png";
+import img5 from "./medias/avancar3s.png";
+import img6 from "./medias/bookmark.png";
 
 class App extends Component {
   state = {
-    time: document.getElementsByTagName("audio"),
-    ms: 0,
-    s: 0,
-    min: 0,
-    h: 0,
-    hora: null,
-    audios: []
+    tempo: document.getElementsByTagName("audio"),
+    audioId: null,
+    link: null,
+    englishTranscription: null,
+    portugueseTranscription: null,
+    userId: null,
+    velocidade: "1.0x",
+
+    time: {
+      total: null,
+      hor: null,
+      min: null,
+      seg: null
+    },
+
+    tempoMarcacao: {
+      begin: null,
+      end: null
+    },
+    lista: []
   };
 
-  marcador = event => {
-    var time = [];
-
-    time[0] = this.state.time.player1_html5.currentTime - 1;
-    time[1] = this.state.time.player1_html5.currentTime + 3;
-
-    this.calculoMarcador(time);
+  marcador = {
+    begin: null,
+    end: null,
+    userId: null,
+    audioId: null
   };
 
-  calculoMarcador = time => {
-    var ms, seg, min, hor, inicio, final;
-
-    for (var posicao = 0; posicao < 2; posicao++) {
-      ms = time[posicao] - Math.trunc(time[posicao]);
-      seg = Math.trunc(time[posicao]);
-
-      min = Math.trunc(seg / 60);
-      seg %= 60;
-
-      hor = Math.trunc(min / 60);
-      min %= 60;
-
-      if (posicao === 0) inicio = hor + ":" + min + ":" + seg;
-      if (posicao === 1) final = hor + ":" + min + ":" + seg;
-    }
-
-    console.log(inicio, final); //teste de tempo do marcador
-  };
-
-  retorna = event => {
-    this.state.time.player1_html5.currentTime =
-      this.state.time.player1_html5.currentTime - 3;
-  };
-
-  atrasa = event => {
-    this.state.time.player1_html5.playbackRate = 0.5;
-  };
-
-  repete = event => {
-    this.state.time.player1_html5.pause();
-    this.state.time.player1_html5.currentTime = 0;
-    this.state.time.player1_html5.playbackRate = 1.0;
-    this.state.time.player1_html5.play();
-  };
-
-  normaliza = event => {
-    this.state.time.player1_html5.playbackRate = 1.0;
-  };
-
-  avanca = event => {
-    this.state.time.player1_html5.currentTime =
-      this.state.time.player1_html5.currentTime + 3;
-  };
+  buscarMarcador() {
+    axios
+      .get(`https://idiomabackend.herokuapp.com/marking?userId=1&audioId=1`)
+      .then(res => {
+        const lista = res.data;
+        console.log(lista);
+        this.setState({ lista });
+      });
+  }
 
   componentDidMount() {
     axios.get("http://idiomabackend.herokuapp.com/audio/").then(result => {
-      const audios = result.data[0].link;
-      this.setState({ audios });
+      const audioId = result.data[0].id;
+      const link = result.data[0].link;
+      const total = result.data[0].duration;
+      const englishTranscription = result.data[0].englishTranscription;
+      const portugueseTranscription = result.data[0].portugueseTranscription;
+
+      this.setState({
+        audioId: audioId,
+        link: link,
+        englishTranscription: englishTranscription,
+        portugueseTranscription: portugueseTranscription,
+
+        time: {
+          total: total
+        }
+      });
+
+      this.converterSegundos(total);
+
+      this.buscarMarcador();
+    });
+
+    axios.get("http://idiomabackend.herokuapp.com/user/1").then(response => {
+      const userId = response.data.id;
+
+      this.setState({
+        userId: userId
+      });
     });
   }
 
-  render() {
-    const sources = [
-        {
-          src: this.state.audios.toString(),
-          type: "audio/mp3"
-        }
-      ],
-      config = {},
-      tracks = {};
+  adicionarMarcador(objeto) {
+    axios
+      .post("http://idiomabackend.herokuapp.com/marking/", objeto)
+      .then(response => {
+        console.log("response", response);
+        alert("Marcador Cadastrado!!");
+        return response.data;
+      });
+  }
 
+  gerarMarcacao = event => {
+    this.marcador.begin = this.state.tempo[0].currentTime - 1;
+    this.marcador.end = this.state.tempo[0].currentTime + 3;
+    this.marcador.userId = this.state.userId;
+    this.marcador.audioId = this.state.audioId;
+
+    this.adicionarMarcador(this.marcador);
+    console.log("asdsad - ", this.marcador);
+    console.log("time - ", this.state.tempo);
+  };
+
+  converterSegundos = time => {
+    const hor = Math.trunc(time / 3600);
+    const min = Math.trunc(time / 60);
+    const seg = time % 60;
+
+    this.setState({
+      time: {
+        hor: hor,
+        min: min,
+        seg: seg
+      }
+    });
+  };
+
+  reproduzirMeioSegundoPorSegundo = event => {
+    this.state.tempo[0].playbackRate = 0.5;
+    const velocidade = "0.5x";
+    this.setState({
+      velocidade: velocidade
+    });
+    console.log("velocidade - ", this.state.velocidade);
+  };
+
+  reproduzirUmSegundoPorSegundo = event => {
+    this.state.tempo[0].playbackRate = 1.0;
+    const velocidade = "1.0x";
+    this.setState({
+      velocidade: velocidade
+    });
+    console.log("velocidade - ", this.state.velocidade);
+  };
+
+  avancarTresSegundos = event => {
+    this.state.tempo[0].currentTime += 3;
+  };
+
+  voltarTresSegundos = event => {
+    this.state.tempo[0].currentTime -= 3;
+  };
+
+  // voltarAoInicio = event => {
+  //   this.state.time.player1_html5.pause();
+  //   this.state.time.player1_html5.currentTime = 0;
+  //   this.state.time.player1_html5.playbackRate = 1.0;
+  //   this.state.time.player1_html5.play();
+  // };
+
+  render() {
     return (
       <div className="container">
-        <div>
-          <div className="row wrapper-row">
-            <div className="col-12 " />
+        {this.Player()}
+        {this.ControlesPlayer()}
+        <div className="row">
+          {this.CardUm()}
+          {this.Imagens_PT_EN_Null()}
+          {this.CardDois()}
+        </div>
+        {this.ControlesPagina()}
+        {this.listarMarcador()}
+      </div>
+    );
+  }
+
+  Player() {
+    return (
+      <div className="player-wrapper">
+        <div className="col-12 col-md-12">
+          <ReactPlayer
+            className="react-player"
+            url={this.state.link}
+            volume={0.5}
+            loop={false}
+            playbackRate={1}
+            playing={false}
+            muted={false}
+            ref={this.ref}
+            controls
+          />
+        </div>
+      </div>
+    );
+  }
+
+  ControlesPlayer() {
+    return (
+      <div className="row wrapper-row">
+        <div className="play-audio-buttons">
+          <input
+            type="image"
+            alt="img"
+            src={img6}
+            id="icon-marcador"
+            onClick={this.gerarMarcacao}
+          />
+          <input
+            type="image"
+            alt="img"
+            src={img4}
+            id="icon-retornar"
+            onClick={this.voltarTresSegundos}
+          />
+          <input
+            type="image"
+            alt="img"
+            src={img5}
+            id="icon-avancar"
+            onClick={this.avancarTresSegundos}
+          />
+          <button
+            type="button"
+            className="btn btn-light btn-text"
+            id="menos"
+            onClick={this.reproduzirMeioSegundoPorSegundo}
+          >
+            {" "}
+            -{" "}
+          </button>
+          <label
+            type="button"
+            className="btn btn-light btn-text"
+            id="velocidade"
+          >
+            {this.state.velocidade}
+          </label>
+          <button
+            type="button"
+            className="btn btn-light btn-text"
+            id="mais"
+            onClick={this.reproduzirUmSegundoPorSegundo}
+          >
+            {" "}
+            +{" "}
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  CardUm() {
+    return (
+      <div className="col-12 col-md-5 col-lg-4 card card-portuguese ">
+        <div className="card-body">
+          <h5 className="card-title">Título do Texto em Português</h5>
+          <h6 className="card-subtitle mb-2 text-muted">Texto em português</h6>
+          <p className="card-text">
+            Some quick example text to build on the card title and make up the
+            bulk of the card's content.
+          </p>
+        </div>
+      </div>
+    );
+  }
+
+  Imagens_PT_EN_Null() {
+    return (
+      <div className="col-12 col-md-2 col-lg-4 ">
+        <div className="row flag">
+          <div className="col-12">
+            <input type="image" alt="img" src={img1} id="flag-brasil" />
           </div>
-          <div className="row wrapper-row">
-            <div className="col-12 " align="center">
-              <button className="btn btn-light" type="image">
-                <i
-                  className="fas fa-clipboard-check controls"
-                  onClick={this.marcador}
-                />
-              </button>
-              <button className="btn btn-light" type="image">
-                <i
-                  className="fas fa-fast-backward controls"
-                  onClick={this.retorna}
-                />
-              </button>
-              <button className="btn btn-light" type="image">
-                <i className="fas fa-backward controls" onClick={this.atrasa} />
-              </button>
-              <button className="btn btn-light" type="image">
-                <i className="fas fa-redo-alt controls" onClick={this.repete} />
-              </button>
-              <button className="btn btn-light" type="image">
-                <i className="fas fa-play controls" onClick={this.normaliza} />
-              </button>
-              <button className="btn btn-light" type="image">
-                <i
-                  className="fas fa-fast-forward controls"
-                  onClick={this.avanca}
-                />
-              </button>
-            </div>
+          <div className="col-12">
+            <input type="image" alt="img" src={img2} id="flag-eua" />
+          </div>
+          <div className="col-12">
+            <input type="image" alt="img" src={img3} id="hide-icon" />
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  CardDois() {
+    return (
+      <div className=" col-12 col-md-5 col-lg-4  card card-english">
+        <div className="card-body">
+          <h5 className="card-title">Título do Texto em Inglês</h5>
+          <h6 className="card-subtitle mb-2 text-muted">Texto em Inglês</h6>
+          <p className="card-text">
+            Some quick example text to build on the card title and make up the
+            bulk of the card's content.
+          </p>
+        </div>
+      </div>
+    );
+  }
+
+  ControlesPagina() {
+    return (
+      <div className="row wrapper-row">
+        <div className="col-12 col-md-4">
+          <button type="button" className="btn btn-light btn-text">
+            Voltar aos textos
+          </button>
+        </div>
+        <div className="col-12 col-md-4">
+          <button type="button" className="btn btn-light btn-text">
+            Repetição do texto
+          </button>
+        </div>
+        <div className="col-12 col-md-4">
+          <button type="button" className="btn btn-light btn-text ">
+            Ir para repetições
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  listarMarcador() {
+    return (
+      <div>
+        <h5
+          className="navbar  justify-content-center"
+          style={{ color: "#000" }}
+        >
+          Lista de Marcadores
+        </h5>
+        <div className="container">
+          <div className="row">
+            <div className="col-sm-12" />
           </div>
 
-          <div className="row wrapper-row">
-            <div className="col-12 col-md-5 card card-portuguese">
-              <div className="card-body">
-                <h5 className="card-title">Título do Texto em Português</h5>
-                <h6 className="card-subtitle mb-2 text-muted">
-                  Texto em português
-                </h6>
-                <p className="card-text">
-                  Some quick example text to build on the card title and make up
-                  the bulk of the card's content.
-                </p>
-              </div>
-            </div>
+          <div>
+            <table style={{ marginTop: 10 }} className="table table-hover">
+              <thead>
+                <tr>
+                  <th>Id</th>
+                  <th>Início</th>
+                  <th>Fim</th>
+                  <th />
+                </tr>
+              </thead>
+              <tbody>
+                {this.state.lista.map(marcador => {
+                  return (
+                    <tr key={marcador.id}>
+                      <td>{marcador.id}</td>
+                      <td>{marcador.begin}</td>
+                      <td>{marcador.end}</td>
 
-            <div className="col-12 col-md-2">
-              <div className="row flag">
-                <div className="col-12">
-                  <input
-                    type="image"
-                    src={img1}
-                    id="flag-brasil"
-                    onClick={this.formartarHora}
-                  />
-                </div>
-                <div className="col-12">
-                  <input type="image" src={img2} id="flag-eua" />
-                </div>
-                <div className="col-12">
-                  <input type="image" src={img3} id="hide-icon" />
-                </div>
-              </div>
-            </div>
-
-            <div className=" col-12 col-md-5 card card-english">
-              <div className="card-body">
-                <h5 className="card-title">Título do Texto em Inglês</h5>
-                <h6 className="card-subtitle mb-2 text-muted">
-                  Texto em Inglês
-                </h6>
-                <p className="card-text">
-                  Some quick example text to build on the card title and make up
-                  the bulk of the card's content.
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <div className="row wrapper-row">
-            <div className="col-12 col-md-4">
-              <button type="button" className="btn btn-light btn-text">
-                Voltar aos textos
-              </button>
-            </div>
-            <div className="col-12 col-md-4">
-              <button type="button" className="btn btn-light btn-text">
-                Repetição do texto
-              </button>
-            </div>
-            <div className="col-12 col-md-4">
-              <button
-                type="button"
-                className="btn btn-light btn-text "
-                onClick={evet => {}}
-              >
-                Ir para repetições
-              </button>
-            </div>
+                      <td>
+                        <button
+                          className="btn btn-outline-primary"
+                          onClick={e => {
+                            this.tocarMarcacao(marcador.id);
+                          }}
+                        >
+                          Selecionar
+                        </button>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
           </div>
         </div>
       </div>
@@ -200,12 +367,4 @@ class App extends Component {
   }
 }
 
-export default class MostrarDadosNaTela extends Component {
-  render() {
-    return (
-      <div className="root">
-        <App />
-      </div>
-    );
-  }
-}
+export default App;

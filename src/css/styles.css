@@ -1,0 +1,138 @@
+.player-wrapper {
+  position: relative;
+  left: 18%;
+  bottom: 85%;
+  margin-top: -228px;
+  margin-bottom: 40px;
+}
+
+.react-player {
+  position: absoluta;
+  top: 0;
+  left: 0;
+}
+
+@media (min-width: 300px) {
+  .react-player {
+    width: 249px;
+    height: 334px;
+    margin-left: -50px;
+  }
+
+  .play-audio-buttons {
+    position: relative !important;
+    left: 40% !important;
+    bottom: 60% !important;
+    margin-left: -14px;
+  }
+
+  /* #icon-marcador {
+    width: 25px;
+    position: relative;
+    bottom: 42%;
+    margin-left: -62px;
+  } */
+}
+
+.play-audio-buttons {
+  position: relative;
+  left: 40%;
+  bottom: 60%;
+}
+
+#menos {
+  position: relative;
+  left: 100%;
+  bottom: 60%;
+}
+
+#velocidade {
+  position: relative;
+  left: 105%;
+  bottom: 60%;
+}
+
+#mais {
+  position: relative;
+  left: 110%;
+  bottom: 60%;
+}
+
+#icon-marcador {
+  width: 25px;
+  position: relative;
+  bottom: 42%; /*50%  */
+}
+
+#icon-retornar {
+  width: 25px;
+  position: relative;
+  left: 6%;
+  bottom: 50%;
+}
+
+#icon-avancar {
+  width: 25px;
+  position: relative;
+  left: 12%;
+  bottom: 50%;
+}
+
+#flag-brasil {
+  width: 50px;
+  /* position: absolute;
+  left: 45%;
+  bottom: 60%; */
+}
+
+#flag-eua {
+  width: 50px;
+  margin-top: 15px;
+  /* position: absolute;
+  left: 45%;
+  bottom: 51%; */
+}
+
+#hide-icon {
+  width: 50px;
+  /* margin-top: 15px; 
+  position: absolute;
+  left: 45%;
+  bottom: 40%;*/
+}
+
+.card-english {
+  width: 350px;
+  height: 300px;
+  left: 0;
+  bottom: 30%;
+}
+
+.card-portuguese {
+  width: 350px;
+  height: 300px;
+  left: 0;
+  bottom: 30%;
+}
+
+.controls {
+  width: 20px;
+  height: 20px;
+  left: 19%;
+}
+
+.wrapper-row {
+  margin: 20px 0;
+  text-align: center;
+}
+
+.flag {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  margin-top: 15px;
+}
+
+.btn-text {
+  margin-bottom: 8px;
+}

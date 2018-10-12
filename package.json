@@ -8,6 +8,7 @@
     "flv.js": "^1.4.2",
     "react": "^16.5.2",
     "react-dom": "^16.5.2",
+    "react-player": "^1.6.6",
     "react-scripts": "1.1.5"
   },
   "scripts": {
