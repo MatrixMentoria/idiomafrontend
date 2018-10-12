@@ -120,21 +120,42 @@ class App extends Component {
   };
 
   reproduzirMeioSegundoPorSegundo = event => {
-    this.state.tempo[0].playbackRate = 0.5;
-    const velocidade = "0.5x";
-    this.setState({
-      velocidade: velocidade
-    });
-    console.log("velocidade - ", this.state.velocidade);
+    if (this.state.tempo[0].playbackRate === 1.0) {
+      this.state.tempo[0].playbackRate = 0.9;
+      const velocidade = "0.9x";
+      this.setState({
+        velocidade: velocidade
+      });
+      console.log("velocidade - ", this.state.velocidade);
+    } else if (this.state.tempo[0].playbackRate === 1.1) {
+      this.state.tempo[0].playbackRate = 1.0;
+
+      const velocidade = "1.0x";
+      this.setState({
+        velocidade: velocidade
+      });
+      console.log("velocidade - ", this.state.velocidade);
+    }
   };
 
   reproduzirUmSegundoPorSegundo = event => {
-    this.state.tempo[0].playbackRate = 1.0;
-    const velocidade = "1.0x";
-    this.setState({
-      velocidade: velocidade
-    });
-    console.log("velocidade - ", this.state.velocidade);
+    if (this.state.tempo[0].playbackRate === 0.9) {
+      this.state.tempo[0].playbackRate = 1.0;
+
+      const velocidade = "1.0x";
+      this.setState({
+        velocidade: velocidade
+      });
+      console.log("velocidade - ", this.state.velocidade);
+    } else if (this.state.tempo[0].playbackRate === 1.0) {
+      this.state.tempo[0].playbackRate = 1.1;
+
+      const velocidade = "1.1x";
+      this.setState({
+        velocidade: velocidade
+      });
+      console.log("velocidade - ", this.state.velocidade);
+    }
   };
 
   avancarTresSegundos = event => {
