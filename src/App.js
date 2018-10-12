@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import "./App.css";
 import "./css/general.css";
-import MediaElement from "./MediaElement";
 import img1 from "../src/imagens/bandeiradobrasil.png";
 import img2 from "../src/imagens/bandeiradoseua.png";
 import img3 from "../src/imagens/hideicon.png";
@@ -93,20 +92,7 @@ class App extends Component {
       <div className="container">
         <div>
           <div className="row wrapper-row">
-            <div className="col-12 ">
-              <MediaElement
-                id="player1"
-                mediaType="audio"
-                preload="none"
-                controls
-                width="788"
-                height="360"
-                poster=""
-                sources={JSON.stringify(sources)}
-                options={JSON.stringify(config)}
-                tracks={JSON.stringify(tracks)}
-              />
-            </div>
+            <div className="col-12 " />
           </div>
           <div className="row wrapper-row">
             <div className="col-12 " align="center">
