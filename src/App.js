@@ -18,7 +18,7 @@ class App extends Component {
     englishTranscription: null,
     portugueseTranscription: null,
     userId: null,
-    velocidade: "1.0x",
+    velocidade: null,
 
     time: {
       total: null,
@@ -64,6 +64,7 @@ class App extends Component {
         link: link,
         englishTranscription: englishTranscription,
         portugueseTranscription: portugueseTranscription,
+        velocidade: "1.0x",
 
         time: {
           total: total
@@ -119,43 +120,25 @@ class App extends Component {
     });
   };
 
-  diminuirVelocidadeAudio = event => {
-    if (this.state.tempo[0].playbackRate === 1.0) {
-      this.state.tempo[0].playbackRate = 0.9;
-      const velocidade = "0.9x";
-      this.setState({
-        velocidade: velocidade
-      });
-      console.log("velocidade - ", this.state.velocidade);
-    } else if (this.state.tempo[0].playbackRate === 1.1) {
-      this.state.tempo[0].playbackRate = 1.0;
+  alterarVelocidadeAudio = info => {
 
-      const velocidade = "1.0x";
-      this.setState({
-        velocidade: velocidade
-      });
-      console.log("velocidade - ", this.state.velocidade);
-    }
-  };
+    info === true ?
+      this.state.tempo[0].playbackRate += 0.1 :
+      this.state.tempo[0].playbackRate -= 0.1;
 
-  aumentarVelocidadeAudio = event => {
-    if (this.state.tempo[0].playbackRate === 0.9) {
-      this.state.tempo[0].playbackRate = 1.0;
+    this.state.tempo[0].playbackRate > 2 ?
+      this.refs.bMais.disabled = true :
+      this.refs.bMais.disabled = false;
 
-      const velocidade = "1.0x";
-      this.setState({
-        velocidade: velocidade
-      });
-      console.log("velocidade - ", this.state.velocidade);
-    } else if (this.state.tempo[0].playbackRate === 1.0) {
-      this.state.tempo[0].playbackRate = 1.1;
+    this.state.tempo[0].playbackRate < 0.51 ?
+      this.refs.bMenos.disabled = true:
+      this.refs.bMenos.disabled = false;
+    
+    const velocidade = this.state.tempo[0].playbackRate.toFixed(1).toString();
 
-      const velocidade = "1.1x";
-      this.setState({
-        velocidade: velocidade
-      });
-      console.log("velocidade - ", this.state.velocidade);
-    }
+    this.setState({
+      velocidade: (velocidade + "x"),
+    });
   };
 
   avancarTresSegundos = event => {
@@ -202,7 +185,7 @@ class App extends Component {
             url={this.state.link}
             volume={0.5}
             loop={false}
-            playbackRate={1}
+            playbackRate={1.0}
             playing={false}
             muted={false}
             ref={this.ref}
@@ -242,7 +225,8 @@ class App extends Component {
             type="button"
             className="btn btn-light btn-text"
             id="menos"
-            onClick={this.diminuirVelocidadeAudio}
+            onClick={() => { this.alterarVelocidadeAudio(false); }}
+            ref="bMenos"
           >
             {" "}
             -{" "}
@@ -258,7 +242,8 @@ class App extends Component {
             type="button"
             className="btn btn-light btn-text"
             id="mais"
-            onClick={this.aumentarVelocidadeAudio}
+            onClick={() => { this.alterarVelocidadeAudio(true); }}
+            ref="bMais"
           >
             {" "}
             +{" "}
