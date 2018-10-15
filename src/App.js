@@ -37,10 +37,9 @@ class App extends Component {
 
   };
 
-  componentDidMount() {
+  componentDidMount = () => {
     axios.get("http://idiomabackend.herokuapp.com/audio/")
-      .then(result => {
-
+      .then( result => {
         const audioId = result.data[0].id;
         const link = result.data[0].link;
         const textoEN = result.data[0].englishTranscription;
@@ -63,8 +62,7 @@ class App extends Component {
       });
 
     axios.get("http://idiomabackend.herokuapp.com/user/1")
-      .then(result => {
-
+      .then( result => {
         const userId = result.data.id;
         this.setState({
           userId: userId
@@ -72,40 +70,52 @@ class App extends Component {
       });
   }
 
-  popularListaMarcadores() {
+  popularListaMarcadores = () => {
     axios.get(`https://idiomabackend.herokuapp.com/marking?userId=1&audioId=1`)
-      .then(res => {
-
-        const marcadores = res.data;
+      .then( result => {
+        const marcadores = result.data;
         this.setState({
           marcadores: marcadores,
         });
       });
   }
 
-  adicionarMarcador(novoMarcador) {
+  adicionarMarcador = novoMarcador => {
     axios.post("http://idiomabackend.herokuapp.com/marking/", novoMarcador)
-      .then(result => {
+      .then( result => {
+        alert("Marcador nº " + result.data.id + " cadastrado com sucesso!");
+      });
+  }
 
-        alert("Marcador nº "+result.data.id +" cadastrado com sucesso!");
+  excluirMarcarao = id => {
+    axios.delete("http://idiomabackend.herokuapp.com/marking/" + id)
+      .then( () => {
+        alert("Marcador nº " + id + " excluído com sucesso!");
+      })
+      .then( () => {
+        window.location.reload(true);
       });
   }
 
   gerarMarcacao = () => {
-
     const novoMarcador = {
       audioId: this.state.audioId,
       userId: this.state.userId,
       begin: this.state.tempo[0].currentTime - 1,
       end: this.state.tempo[0].currentTime + 3
     }
-
     this.adicionarMarcador(novoMarcador);
+  };
 
+  tocarMarcacao = marcadorBegin => {
+    this.state.tempo[0].currentTime = marcadorBegin;
+    this.state.tempo[0].play();
+    setTimeout( () => {
+      this.state.tempo[0].pause();
+    }, 5000);
   };
 
   converterSegundos = duracao => {
-    
     const hor = Math.trunc(duracao / 3600);
     const min = Math.trunc(duracao / 60);
     const seg = duracao % 60;
@@ -148,17 +158,7 @@ class App extends Component {
     this.state.tempo[0].currentTime -= 3;
   };
 
-  tocarMarcacao = marcadorBegin => {
-
-    this.state.tempo[0].currentTime = marcadorBegin;
-    this.state.tempo[0].play();
-    setTimeout(() => {
-      this.state.tempo[0].pause();
-    }, 5000);
-
-  };
-
-  render() {
+  render = () => {
     return (
       <div className="container">
         {this.Player()}
@@ -174,7 +174,7 @@ class App extends Component {
     );
   }
 
-  Player() {
+  Player = () => {
     return (
       <div className="player-wrapper">
         <div className="col-12 col-md-12">
@@ -186,7 +186,6 @@ class App extends Component {
             playbackRate={1.0}
             playing={false}
             muted={false}
-            ref={this.ref}
             controls
           />
         </div>
@@ -194,7 +193,7 @@ class App extends Component {
     );
   }
 
-  ControlesPlayer() {
+  ControlesPlayer = () => {
     return (
       <div className="row wrapper-row">
         <div className="play-audio-buttons">
@@ -223,7 +222,7 @@ class App extends Component {
             type="button"
             className="btn btn-light btn-text"
             id="menos"
-            onClick={() => { this.alterarVelocidadeAudio(false); }}
+            onClick={ () => { this.alterarVelocidadeAudio(false); }}
             ref="bMenos"
           >
             {" "}-{" "}
@@ -239,7 +238,7 @@ class App extends Component {
             type="button"
             className="btn btn-light btn-text"
             id="mais"
-            onClick={() => { this.alterarVelocidadeAudio(true); }}
+            onClick={ () => { this.alterarVelocidadeAudio(true); }}
             ref="bMais"
           >
             {" "}+{" "}
@@ -249,7 +248,7 @@ class App extends Component {
     );
   }
 
-  CardUm() {
+  CardUm = () => {
     return (
       <div className="col-12 col-md-5 col-lg-4 card card-portuguese ">
         <div className="card-body">
@@ -264,7 +263,7 @@ class App extends Component {
     );
   }
 
-  Imagens_PT_EN_Null() {
+  Imagens_PT_EN_Null = () => {
     return (
       <div className="col-12 col-md-2 col-lg-4 ">
         <div className="row flag">
@@ -282,7 +281,7 @@ class App extends Component {
     );
   }
 
-  CardDois() {
+  CardDois = () => {
     return (
       <div className=" col-12 col-md-5 col-lg-4  card card-english">
         <div className="card-body">
@@ -297,7 +296,7 @@ class App extends Component {
     );
   }
 
-  ControlesPagina() {
+  ControlesPagina = () => {
     return (
       <div className="row wrapper-row">
         <div className="col-12 col-md-4">
@@ -319,7 +318,7 @@ class App extends Component {
     );
   }
 
-  MarcadoresLista() {
+  MarcadoresLista = () => {
     return (
       <div>
         <h5
@@ -340,25 +339,33 @@ class App extends Component {
                   <th>Id</th>
                   <th>Início</th>
                   <th>Fim</th>
-                  <th />
+                  <th>Ações</th>
                 </tr>
               </thead>
               <tbody>
-                {this.state.marcadores.map(marcador => {
+                {this.state.marcadores.map( marcador => {
                   return (
                     <tr key={marcador.id}>
                       <td>{marcador.id}</td>
                       <td>{marcador.begin}</td>
                       <td>{marcador.end}</td>
-
                       <td>
                         <button
                           className="btn btn-outline-primary"
-                          onClick={() => {
+                          onClick={ () => {
                             this.tocarMarcacao(marcador.begin);
                           }}
                         >
                           Selecionar
+                        </button>
+                        {" "}
+                        <button
+                          className="btn btn-outline-primary"
+                          onClick={ () => {
+                            this.excluirMarcarao(marcador.id);
+                          }}
+                        >
+                          Excluir
                         </button>
                       </td>
                     </tr>
