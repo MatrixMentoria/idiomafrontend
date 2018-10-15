@@ -149,9 +149,16 @@ class App extends Component {
     this.state.tempo[0].currentTime -= 3;
   };
 
-  tocarMarcacao = (marcadorBegin, marcadorEnd) => {
+  tocarMarcacao = marcadorBegin => {
+
     this.state.tempo[0].currentTime = marcadorBegin;
+    this.state.tempo[0].play();
+    setTimeout(() => {
+      this.state.tempo[0].pause();
+    }, 5000);
+
   };
+
 
   // voltarAoInicio = event => {
   //   this.state.time.player1_html5.pause();
@@ -359,7 +366,7 @@ class App extends Component {
                         <button
                           className="btn btn-outline-primary"
                           onClick={e => {
-                            this.tocarMarcacao(marcador.begin, marcador.end);
+                            this.tocarMarcacao(marcador.begin);
                           }}
                         >
                           Selecionar
