@@ -12,107 +12,106 @@ import img6 from "./medias/bookmark.png";
 
 class App extends Component {
   state = {
+
+    //Info Player
     tempo: document.getElementsByTagName("audio"),
-    audioId: null,
-    link: null,
-    englishTranscription: null,
-    portugueseTranscription: null,
-    userId: null,
     velocidade: null,
 
-    time: {
+    //Infos User
+    userId: null,
+
+    //Infos Audio
+    audioId: null,
+    link: null,
+    textoEN: null,
+    textoPT: null,
+    duracao: {
       total: null,
       hor: null,
       min: null,
       seg: null
     },
 
-    tempoMarcacao: {
-      begin: null,
-      end: null
-    },
-    lista: []
-  };
+    //Infos Marcadores
+    marcadores: [],
 
-  marcador = {
-    begin: null,
-    end: null,
-    userId: null,
-    audioId: null
   };
-
-  buscarMarcador() {
-    axios
-      .get(`https://idiomabackend.herokuapp.com/marking?userId=1&audioId=1`)
-      .then(res => {
-        const lista = res.data;
-        console.log(lista);
-        this.setState({ lista });
-      });
-  }
 
   componentDidMount() {
-    axios.get("http://idiomabackend.herokuapp.com/audio/").then(result => {
-      const audioId = result.data[0].id;
-      const link = result.data[0].link;
-      const total = result.data[0].duration;
-      const englishTranscription = result.data[0].englishTranscription;
-      const portugueseTranscription = result.data[0].portugueseTranscription;
+    axios.get("http://idiomabackend.herokuapp.com/audio/")
+      .then(result => {
 
-      this.setState({
-        audioId: audioId,
-        link: link,
-        englishTranscription: englishTranscription,
-        portugueseTranscription: portugueseTranscription,
-        velocidade: "1.0x",
+        const audioId = result.data[0].id;
+        const link = result.data[0].link;
+        const textoEN = result.data[0].englishTranscription;
+        const textoPT = result.data[0].portugueseTranscription;
+        const total = result.data[0].duration;
 
-        time: {
-          total: total
-        }
+        this.setState({
+          audioId: audioId,
+          link: link,
+          textoEN: textoEN,
+          textoPT: textoPT,
+          duracao: {
+            total: total
+          },
+          velocidade: "1.0x",
+        });
+
+        this.converterSegundos(total);
+        this.popularListaMarcadores();
       });
 
-      this.converterSegundos(total);
+    axios.get("http://idiomabackend.herokuapp.com/user/1")
+      .then(result => {
 
-      this.buscarMarcador();
-    });
-
-    axios.get("http://idiomabackend.herokuapp.com/user/1").then(response => {
-      const userId = response.data.id;
-
-      this.setState({
-        userId: userId
-      });
-    });
-  }
-
-  adicionarMarcador(objeto) {
-    axios
-      .post("http://idiomabackend.herokuapp.com/marking/", objeto)
-      .then(response => {
-        console.log("response", response);
-        alert("Marcador Cadastrado!!");
-        return response.data;
+        const userId = result.data.id;
+        this.setState({
+          userId: userId
+        });
       });
   }
 
-  gerarMarcacao = event => {
-    this.marcador.begin = this.state.tempo[0].currentTime - 1;
-    this.marcador.end = this.state.tempo[0].currentTime + 3;
-    this.marcador.userId = this.state.userId;
-    this.marcador.audioId = this.state.audioId;
+  popularListaMarcadores() {
+    axios.get(`https://idiomabackend.herokuapp.com/marking?userId=1&audioId=1`)
+      .then(res => {
 
-    this.adicionarMarcador(this.marcador);
-    console.log("asdsad - ", this.marcador);
-    console.log("time - ", this.state.tempo);
+        const marcadores = res.data;
+        this.setState({
+          marcadores: marcadores,
+        });
+      });
+  }
+
+  adicionarMarcador(novoMarcador) {
+    axios.post("http://idiomabackend.herokuapp.com/marking/", novoMarcador)
+      .then(result => {
+
+        alert("Marcador nº "+result.data.id +" cadastrado com sucesso!");
+      });
+  }
+
+  gerarMarcacao = () => {
+
+    const novoMarcador = {
+      audioId: this.state.audioId,
+      userId: this.state.userId,
+      begin: this.state.tempo[0].currentTime - 1,
+      end: this.state.tempo[0].currentTime + 3
+    }
+
+    this.adicionarMarcador(novoMarcador);
+
   };
 
-  converterSegundos = time => {
-    const hor = Math.trunc(time / 3600);
-    const min = Math.trunc(time / 60);
-    const seg = time % 60;
+  converterSegundos = duracao => {
+    
+    const hor = Math.trunc(duracao / 3600);
+    const min = Math.trunc(duracao / 60);
+    const seg = duracao % 60;
 
     this.setState({
-      time: {
+      duracao: {
         hor: hor,
         min: min,
         seg: seg
@@ -131,9 +130,9 @@ class App extends Component {
       this.refs.bMais.disabled = false;
 
     this.state.tempo[0].playbackRate < 0.51 ?
-      this.refs.bMenos.disabled = true:
+      this.refs.bMenos.disabled = true :
       this.refs.bMenos.disabled = false;
-    
+
     const velocidade = this.state.tempo[0].playbackRate.toFixed(1).toString();
 
     this.setState({
@@ -141,11 +140,11 @@ class App extends Component {
     });
   };
 
-  avancarTresSegundos = event => {
+  avancarTresSegundos = () => {
     this.state.tempo[0].currentTime += 3;
   };
 
-  voltarTresSegundos = event => {
+  voltarTresSegundos = () => {
     this.state.tempo[0].currentTime -= 3;
   };
 
@@ -159,14 +158,6 @@ class App extends Component {
 
   };
 
-
-  // voltarAoInicio = event => {
-  //   this.state.time.player1_html5.pause();
-  //   this.state.time.player1_html5.currentTime = 0;
-  //   this.state.time.player1_html5.playbackRate = 1.0;
-  //   this.state.time.player1_html5.play();
-  // };
-
   render() {
     return (
       <div className="container">
@@ -178,7 +169,7 @@ class App extends Component {
           {this.CardDois()}
         </div>
         {this.ControlesPagina()}
-        {this.listarMarcador()}
+        {this.MarcadoresLista()}
       </div>
     );
   }
@@ -235,8 +226,7 @@ class App extends Component {
             onClick={() => { this.alterarVelocidadeAudio(false); }}
             ref="bMenos"
           >
-            {" "}
-            -{" "}
+            {" "}-{" "}
           </button>
           <label
             type="button"
@@ -252,8 +242,7 @@ class App extends Component {
             onClick={() => { this.alterarVelocidadeAudio(true); }}
             ref="bMais"
           >
-            {" "}
-            +{" "}
+            {" "}+{" "}
           </button>
         </div>
       </div>
@@ -330,7 +319,7 @@ class App extends Component {
     );
   }
 
-  listarMarcador() {
+  MarcadoresLista() {
     return (
       <div>
         <h5
@@ -355,7 +344,7 @@ class App extends Component {
                 </tr>
               </thead>
               <tbody>
-                {this.state.lista.map(marcador => {
+                {this.state.marcadores.map(marcador => {
                   return (
                     <tr key={marcador.id}>
                       <td>{marcador.id}</td>
@@ -365,7 +354,7 @@ class App extends Component {
                       <td>
                         <button
                           className="btn btn-outline-primary"
-                          onClick={e => {
+                          onClick={() => {
                             this.tocarMarcacao(marcador.begin);
                           }}
                         >
