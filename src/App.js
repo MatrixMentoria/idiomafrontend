@@ -24,14 +24,25 @@ class App extends Component {
     //Infos Audio
     audioId: null,
     link: null,
-    textoEN: null,
-    textoPT: null,
     duracao: {
       total: null,
       hor: null,
       min: null,
       seg: null
     },
+    legendaEN: null,
+    legendaPT: null,
+
+    /*
+     * Valores atualmente setados, enquanto os dados
+     * correspondentes não forem fornecidos pelo backend
+     */
+    tituloEN: "A English Title",
+    textoEN:
+      "Some quick example text to build on the card title and make up the bulk of the card's content.",
+    tituloPT: "Um título em português",
+    textoPT:
+      "Apenas um exemplo curto de texto em português para preencher a div ",
 
     //Infos Marcadores
     marcadores: []
@@ -41,19 +52,27 @@ class App extends Component {
     axios.get("http://idiomabackend.herokuapp.com/audio/").then(result => {
       const audioId = result.data[0].id;
       const link = result.data[0].link;
-      const textoEN = result.data[0].englishTranscription;
-      const textoPT = result.data[0].portugueseTranscription;
+      const legendaEN = result.data[0].englishTranscription;
+      const legendaPT = result.data[0].portugueseTranscription;
       const total = result.data[0].duration;
+      // const tituloEN = result.data[0].englishTitle
+      // const textoEN = result.data[0].englishText
+      // const tituloPT = result.data[0].portugueseTitle
+      // const textoPT = result.data[0].portugueseText
 
       this.setState({
+        velocidade: "1.0x",
         audioId: audioId,
         link: link,
-        textoEN: textoEN,
-        textoPT: textoPT,
         duracao: {
           total: total
         },
-        velocidade: "1.0x"
+        legendaEN: legendaEN,
+        legendaPT: legendaPT
+        // tituloEN: tituloEN,
+        // textoEN: textoEN,
+        // tituloPT: tituloPT,
+        // textoPT: textoPT,
       });
 
       this.converterSegundos(total);
@@ -158,6 +177,33 @@ class App extends Component {
     this.state.tempo[0].currentTime -= 3;
   };
 
+  exibirOcultarTxtPT = () => {
+    if (this.refs.txtPT.textContent !== "") {
+      this.refs.titlePT.textContent = "";
+      this.refs.txtPT.textContent = "";
+    } else {
+      this.refs.titlePT.textContent = this.state.tituloPT;
+      this.refs.txtPT.textContent = this.state.textoPT;
+    }
+  };
+
+  exibirOcultarTxtEN = () => {
+    if (this.refs.txtEN.textContent !== "") {
+      this.refs.titleEN.textContent = "";
+      this.refs.txtEN.textContent = "";
+    } else {
+      this.refs.titleEN.textContent = this.state.tituloEN;
+      this.refs.txtEN.textContent = this.state.textoEN;
+    }
+  };
+
+  ocultarTodos = () => {
+    this.refs.titlePT.textContent = "";
+    this.refs.txtPT.textContent = "";
+    this.refs.titleEN.textContent = "";
+    this.refs.txtEN.textContent = "";
+  };
+
   render = () => {
     return (
       <div className="container">
@@ -258,11 +304,12 @@ class App extends Component {
     return (
       <div className="col-12 col-md-5 col-lg-4 card card-portuguese ">
         <div className="card-body">
-          <h5 className="card-title">Título do Texto em Português</h5>
           <h6 className="card-subtitle mb-2 text-muted">Texto em português</h6>
-          <p className="card-text">
-            Some quick example text to build on the card title and make up the
-            bulk of the card's content.
+          <h5 className="card-title" ref="titlePT">
+            {this.state.tituloPT}
+          </h5>
+          <p className="card-text" ref="txtPT">
+            {this.state.textoPT}
           </p>
         </div>
       </div>
@@ -274,13 +321,31 @@ class App extends Component {
       <div className="col-12 col-md-2 col-lg-4 ">
         <div className="row flag">
           <div className="col-12">
-            <input type="image" alt="img" src={img1} id="flag-brasil" />
+            <input
+              type="image"
+              alt="img"
+              src={img1}
+              id="flag-brasil"
+              onClick={this.exibirOcultarTxtPT}
+            />
           </div>
           <div className="col-12">
-            <input type="image" alt="img" src={img2} id="flag-eua" />
+            <input
+              type="image"
+              alt="img"
+              src={img2}
+              id="flag-eua"
+              onClick={this.exibirOcultarTxtEN}
+            />
           </div>
           <div className="col-12">
-            <input type="image" alt="img" src={img3} id="hide-icon" />
+            <input
+              type="image"
+              alt="img"
+              src={img3}
+              id="hide-icon"
+              onClick={this.ocultarTodos}
+            />
           </div>
         </div>
       </div>
@@ -291,11 +356,12 @@ class App extends Component {
     return (
       <div className=" col-12 col-md-5 col-lg-4  card card-english">
         <div className="card-body">
-          <h5 className="card-title">Título do Texto em Inglês</h5>
           <h6 className="card-subtitle mb-2 text-muted">Texto em Inglês</h6>
-          <p className="card-text">
-            Some quick example text to build on the card title and make up the
-            bulk of the card's content.
+          <h5 className="card-title" ref="titleEN">
+            {this.state.tituloEN}
+          </h5>
+          <p className="card-text" ref="txtEN">
+            {this.state.textoEN}
           </p>
         </div>
       </div>
@@ -354,7 +420,7 @@ class App extends Component {
                       <td>{marcador.begin}</td>
                       <td>{marcador.end}</td>
                       <td>
-                      <input
+                        <input
                           type="image"
                           alt="img"
                           src={img7}
