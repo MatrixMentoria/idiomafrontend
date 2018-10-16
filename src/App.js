@@ -118,10 +118,13 @@ class App extends Component {
   };
 
   gerarMarcacao = () => {
+    if (this.state.tempo[0].currentTime < 1) var tempoMinimo = 0;
+    else var tempoMinimo = this.state.tempo[0].currentTime - 1;
+
     const novoMarcador = {
       audioId: this.state.audioId,
       userId: this.state.userId,
-      begin: this.state.tempo[0].currentTime - 1,
+      begin: tempoMinimo,
       end: this.state.tempo[0].currentTime + 3
     };
     this.adicionarMarcador(novoMarcador);
