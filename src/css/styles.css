@@ -78,6 +78,10 @@
   bottom: 50%;
 }
 
+#icon-play, #icon-excluir {
+  width: 25px;
+}
+
 #flag-brasil {
   width: 50px;
   /* position: absolute;
