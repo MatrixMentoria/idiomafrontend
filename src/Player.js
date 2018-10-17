@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import ReactPlayer from "react-player";
+import { Glyphicon } from "react-bootstrap";
 import "./css/App.css";
 import "./css/styles.css";
 import axios from "axios";
@@ -423,25 +424,23 @@ class App extends Component {
                       <td>{marcador.begin}</td>
                       <td>{marcador.end}</td>
                       <td>
-                        <input
-                          type="image"
-                          alt="img"
-                          src={img7}
-                          id="icon-play"
+                        <a
+                          href="#"
                           onClick={() => {
                             this.tocarMarcacao(marcador.begin);
                           }}
-                        />
-                        {"    "}
-                        <input
-                          type="image"
-                          alt="img"
-                          src={img8}
-                          id="icon-excluir"
+                        >
+                          <Glyphicon glyph="play" />
+                        </a>
+                        {"   "}
+                        <a
+                          href="#"
                           onClick={() => {
-                            this.excluirMarcarao(marcador.id);
+                            this.excluirMarcarao(marcador.begin);
                           }}
-                        />
+                        >
+                          <Glyphicon glyph="trash" />
+                        </a>
                       </td>
                     </tr>
                   );
