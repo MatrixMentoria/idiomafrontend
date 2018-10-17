@@ -305,7 +305,7 @@ class App extends Component {
 
   CardUm = () => {
     return (
-      <div className="col-12 col-sm-12 col-md-5 col-lg-5 card card-portuguese ">
+      <div className="col-12 col-md-5 col-lg-5 card card-portuguese ">
         <div className="card-body">
           <h6 className="card-subtitle mb-2 text-muted">Texto em português</h6>
           <h5 className="card-title" ref="titlePT">
@@ -321,7 +321,7 @@ class App extends Component {
 
   Imagens_PT_EN_Null = () => {
     return (
-      <div className="col-12 col-sm-12 col-md-2 col-lg-2 ">
+      <div className="col-12 col-md-2 col-lg-2 ">
         <div className="row flag">
           <div className="col-12">
             <input
@@ -357,7 +357,7 @@ class App extends Component {
 
   CardDois = () => {
     return (
-      <div className=" col-12 col-sm-12 col-md-5 col-lg-5  card card-english">
+      <div className=" col-12 col-md-5 col-lg-5  card card-english">
         <div className="card-body">
           <h6 className="card-subtitle mb-2 text-muted">Texto em Inglês</h6>
           <h5 className="card-title" ref="titleEN">

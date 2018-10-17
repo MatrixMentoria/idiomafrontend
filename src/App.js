@@ -13,8 +13,8 @@ class Login extends Component {
         <main>
           <Switch>
             <Route path="/Player" component={Player} />
-            <Route path="/" component={App} />
             <Route path="/App" component={App} />
+            <Route path="/" component={App} />
           </Switch>
         </main>
       </div>
