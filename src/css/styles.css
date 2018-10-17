@@ -25,13 +25,6 @@
     bottom: 60% !important;
     margin-left: -14px;
   }
-
-  /* #icon-marcador {
-    width: 25px;
-    position: relative;
-    bottom: 42%;
-    margin-left: -62px;
-  } */
 }
 
 .play-audio-buttons {
@@ -85,25 +78,15 @@
 
 #flag-brasil {
   width: 50px;
-  /* position: absolute;
-  left: 45%;
-  bottom: 60%; */
 }
 
 #flag-eua {
   width: 50px;
   margin-top: 15px;
-  /* position: absolute;
-  left: 45%;
-  bottom: 51%; */
 }
 
 #hide-icon {
   width: 50px;
-  /* margin-top: 15px; 
-  position: absolute;
-  left: 45%;
-  bottom: 40%;*/
 }
 
 .card-english {

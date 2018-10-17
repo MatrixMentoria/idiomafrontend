@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { Switch, Route, Link } from "react-router-dom";
 import "./css/App.css";
 import "./css/styles.css";
-
 import App from "./Login";
 import Player from "./Player";
 
