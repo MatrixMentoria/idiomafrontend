@@ -78,7 +78,8 @@
   bottom: 50%;
 }
 
-#icon-play, #icon-excluir {
+#icon-play,
+#icon-excluir {
   width: 25px;
 }
 
@@ -134,7 +135,7 @@
   text-align: center;
   display: flex;
   flex-direction: column;
-  margin-top: 15px;
+  margin-top: 70px;
 }
 
 .btn-text {
