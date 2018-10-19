@@ -10,13 +10,11 @@ import img3 from "./medias/hideicon.png";
 import img4 from "./medias/retornar3s.png";
 import img5 from "./medias/avancar3s.png";
 import img6 from "./medias/bookmark.png";
-import img7 from "./medias/play.png";
-import img8 from "./medias/excluir.png";
 
 class App extends Component {
   state = {
     //Info Player
-    tempo: document.getElementsByTagName("audio"),
+    audio: document.getElementsByTagName("audio"),
     velocidade: null,
 
     //Infos User
@@ -113,23 +111,23 @@ class App extends Component {
   };
 
   gerarMarcacao = () => {
-    if (this.state.tempo[0].currentTime < 1) var tempoMinimo = 0;
-    else var tempoMinimo = this.state.tempo[0].currentTime - 1;
+    if (this.state.audio[0].currentTime < 1) var tempoMinimo = 0;
+    else tempoMinimo = this.state.audio[0].currentTime - 1;
 
     const novoMarcador = {
       audioId: this.state.audioId,
       userId: this.state.userId,
       begin: tempoMinimo,
-      end: this.state.tempo[0].currentTime + 3
+      end: this.state.audio[0].currentTime + 3
     };
     this.adicionarMarcador(novoMarcador);
   };
 
   tocarMarcacao = marcadorBegin => {
-    this.state.tempo[0].currentTime = marcadorBegin;
-    this.state.tempo[0].play();
+    this.state.audio[0].currentTime = marcadorBegin;
+    this.state.audio[0].play();
     setTimeout(() => {
-      this.state.tempo[0].pause();
+      this.state.audio[0].pause();
     }, 5000);
   };
 
@@ -149,18 +147,18 @@ class App extends Component {
 
   alterarVelocidadeAudio = info => {
     info === true
-      ? (this.state.tempo[0].playbackRate += 0.1)
-      : (this.state.tempo[0].playbackRate -= 0.1);
+      ? (this.state.audio[0].playbackRate += 0.1)
+      : (this.state.audio[0].playbackRate -= 0.1);
 
-    this.state.tempo[0].playbackRate > 2
+    this.state.audio[0].playbackRate > 2
       ? (this.refs.bMais.disabled = true)
       : (this.refs.bMais.disabled = false);
 
-    this.state.tempo[0].playbackRate < 0.51
+    this.state.audio[0].playbackRate < 0.51
       ? (this.refs.bMenos.disabled = true)
       : (this.refs.bMenos.disabled = false);
 
-    const velocidade = this.state.tempo[0].playbackRate.toFixed(1).toString();
+    const velocidade = this.state.audio[0].playbackRate.toFixed(1).toString();
 
     this.setState({
       velocidade: velocidade + "x"
@@ -168,11 +166,11 @@ class App extends Component {
   };
 
   avancarTresSegundos = () => {
-    this.state.tempo[0].currentTime += 3;
+    this.state.audio[0].currentTime += 3;
   };
 
   voltarTresSegundos = () => {
-    this.state.tempo[0].currentTime -= 3;
+    this.state.audio[0].currentTime -= 3;
   };
 
   exibirOcultarTxtPT = () => {
@@ -419,7 +417,7 @@ class App extends Component {
                       <td>{marcador.end}</td>
                       <td>
                         <a
-                          href="#"
+                          href="#play"
                           onClick={() => {
                             this.tocarMarcacao(marcador.begin);
                           }}
@@ -428,9 +426,9 @@ class App extends Component {
                         </a>
                         {"   "}
                         <a
-                          href="#"
+                          href="#trash"
                           onClick={() => {
-                            this.excluirMarcarao(marcador.begin);
+                            this.excluirMarcarao(marcador.id);
                           }}
                         >
                           <Glyphicon glyph="trash" />

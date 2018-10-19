@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Switch, Route, Link } from "react-router-dom";
 import "./css/App.css";
 import "./css/styles.css";
-import App from "./App";
+//import App from "./App";
 import Player from "./Player";
 import axios from "axios";
 
@@ -33,22 +33,21 @@ class Login extends Component {
   };
 
   validarUsuario = () => {
-    this.refs.btnLogin.disabled;
+    this.refs.btnLogin.disabled = true;
     if (
-      document.getElementById("usuarioLogin").value == this.state.user.login &&
-      document.getElementById("senhaLogin").value == this.state.user.password
+      document.getElementById("usuarioLogin").value === this.state.user.login &&
+      document.getElementById("senhaLogin").value === this.state.user.password
     ) {
       this.setState({
         pagina: "/Player"
       });
-      this.refs.btnLogin.enabled;
     } else {
       this.setState({
         pagina: "/Login"
       });
       alert("Informe Usuario e senha corretos!");
-      this.refs.btnLogin.enabled;
     }
+    this.refs.btnLogin.disabled = false;
   };
 
   render = () => {
