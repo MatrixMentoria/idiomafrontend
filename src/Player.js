@@ -34,16 +34,10 @@ class App extends Component {
     legendaEN: null,
     legendaPT: null,
 
-    /*
-     * Valores atualmente setados, enquanto os dados
-     * correspondentes não forem fornecidos pelo backend
-     */
-    tituloEN: "A English Title",
-    textoEN:
-      "Some quick example text to build on the card title and make up the bulk of the card's content.",
-    tituloPT: "Um título em português",
-    textoPT:
-      "Apenas um exemplo curto de texto em português para preencher a div ",
+    tituloEN: null,
+    textoEN: null,
+    tituloPT: null,
+    textoPT: null,
 
     //Infos Marcadores
     marcadores: []
@@ -53,13 +47,13 @@ class App extends Component {
     axios.get("http://idiomabackend.herokuapp.com/audio/").then(result => {
       const audioId = result.data[0].id;
       const link = result.data[0].link;
-      const legendaEN = result.data[0].englishTranscription;
-      const legendaPT = result.data[0].portugueseTranscription;
+      const legendaEN = result.data[0].englishSubtitle;
+      const legendaPT = result.data[0].portugueseSubtitle;
       const total = result.data[0].duration;
-      // const tituloEN = result.data[0].englishTitle
-      // const textoEN = result.data[0].englishText
-      // const tituloPT = result.data[0].portugueseTitle
-      // const textoPT = result.data[0].portugueseText
+      const tituloEN = result.data[0].englishTitle;
+      const textoEN = result.data[0].englishTranscription;
+      const tituloPT = result.data[0].portugueseTitle;
+      const textoPT = result.data[0].portugueseTranscription;
 
       this.setState({
         velocidade: "1.0x",
@@ -69,11 +63,11 @@ class App extends Component {
           total: total
         },
         legendaEN: legendaEN,
-        legendaPT: legendaPT
-        // tituloEN: tituloEN,
-        // textoEN: textoEN,
-        // tituloPT: tituloPT,
-        // textoPT: textoPT,
+        legendaPT: legendaPT,
+        tituloEN: tituloEN,
+        textoEN: textoEN,
+        tituloPT: tituloPT,
+        textoPT: textoPT
       });
 
       this.converterSegundos(total);
@@ -308,7 +302,7 @@ class App extends Component {
     return (
       <div className="col-12 col-md-5 col-lg-5 card card-portuguese ">
         <div className="card-body">
-          <h6 className="card-subtitle mb-2 text-muted">Texto em português</h6>
+          <h6 className="card-subtitle mb-2 text-muted">Texto em Português</h6>
           <h5 className="card-title" ref="titlePT">
             {this.state.tituloPT}
           </h5>
