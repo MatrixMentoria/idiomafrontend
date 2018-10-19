@@ -4,18 +4,51 @@ import "./css/App.css";
 import "./css/styles.css";
 import App from "./App";
 import Player from "./Player";
+import axios from "axios";
 
 class Login extends Component {
   state = {
     //Infos Login
-    usuario: null,
-    senha: null,
+    usuarioLogin: null,
+    senhaLogin: null,
 
     //Infos Cadastro
-    nome: null,
-    usuario: null,
-    senha: null,
-    confirmarSenha: null
+    nomeCadastro: null,
+    usuarioCadastro: null,
+    senhaCadastro: null,
+    confirmarSenhaCadastro: null,
+
+    pagina: "",
+
+    user: []
+  };
+
+  componentDidMount = () => {
+    axios.get("https://idiomabackend.herokuapp.com/user/1").then(result => {
+      const user = result.data;
+      this.setState({
+        user: user
+      });
+    });
+  };
+
+  validarUsuario = () => {
+    this.refs.btnLogin.disabled;
+    if (
+      document.getElementById("usuarioLogin").value == this.state.user.login &&
+      document.getElementById("senhaLogin").value == this.state.user.password
+    ) {
+      this.setState({
+        pagina: "/Player"
+      });
+      this.refs.btnLogin.enabled;
+    } else {
+      this.setState({
+        pagina: "/Login"
+      });
+      alert("Informe Usuario e senha corretos!");
+      this.refs.btnLogin.enabled;
+    }
   };
 
   render = () => {
@@ -30,7 +63,8 @@ class Login extends Component {
                 <input
                   type="text"
                   className="form-control"
-                  value={this.state.usuario}
+                  id="usuarioLogin"
+                  value={this.state.usuarioLogin}
                 />
               </div>
               <div className="form-group">
@@ -38,13 +72,20 @@ class Login extends Component {
                 <input
                   type="password"
                   className="form-control"
-                  value={this.state.senha}
+                  id="senhaLogin"
+                  value={this.state.senhaLogin}
                 />
               </div>
-              <div classNameName="form-group">
-                <Link to="/Player">
+              <div className="form-group">
+                <Link to={this.state.pagina}>
                   {" "}
-                  <input type="submit" className="btnSubmit" value="Login" />
+                  <input
+                    type="submit"
+                    className="btnSubmit"
+                    value="Login"
+                    onClick={this.validarUsuario}
+                    ref="btnLogin"
+                  />
                 </Link>
               </div>
             </form>
@@ -57,7 +98,7 @@ class Login extends Component {
                 <input
                   type="text"
                   className="form-control"
-                  value={this.state.nome}
+                  value={this.state.nomeCadastro}
                 />
               </div>
               <div className="form-group">
@@ -65,7 +106,7 @@ class Login extends Component {
                 <input
                   type="text"
                   className="form-control"
-                  value={this.state.usuario}
+                  value={this.state.usuarioCadastro}
                 />
               </div>
               <div className="form-group">
@@ -73,7 +114,7 @@ class Login extends Component {
                 <input
                   type="password"
                   className="form-control"
-                  value={this.state.senha}
+                  value={this.state.senhaCadastro}
                 />
               </div>
               <div className="form-group">
@@ -81,7 +122,7 @@ class Login extends Component {
                 <input
                   type="password"
                   className="form-control"
-                  value={this.state.confirmarSenha}
+                  value={this.state.confirmarSenhaCadastro}
                 />
               </div>
               <div className="form-group">
