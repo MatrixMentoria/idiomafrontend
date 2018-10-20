@@ -42,7 +42,7 @@ class App extends Component {
   };
 
   componentDidMount = () => {
-    axios.get("http://idiomabackend.herokuapp.com/audio/").then(result => {
+    axios.get("https://idiomabackend.herokuapp.com/audio/").then(result => {
       const audioId = result.data[0].id;
       const link = result.data[0].link;
       const legendaEN = result.data[0].englishSubtitle;
@@ -72,7 +72,7 @@ class App extends Component {
       this.popularListaMarcadores();
     });
 
-    axios.get("http://idiomabackend.herokuapp.com/user/1").then(result => {
+    axios.get("https://idiomabackend.herokuapp.com/user/1").then(result => {
       const userId = result.data.id;
       this.setState({
         userId: userId
@@ -93,7 +93,7 @@ class App extends Component {
 
   adicionarMarcador = novoMarcador => {
     axios
-      .post("http://idiomabackend.herokuapp.com/marking/", novoMarcador)
+      .post("https://idiomabackend.herokuapp.com/marking/", novoMarcador)
       .then(result => {
         alert("Marcador nº " + result.data.id + " cadastrado com sucesso!");
       });
@@ -101,7 +101,7 @@ class App extends Component {
 
   excluirMarcarao = id => {
     axios
-      .delete("http://idiomabackend.herokuapp.com/marking/" + id)
+      .delete("https://idiomabackend.herokuapp.com/marking/" + id)
       .then(() => {
         alert("Marcador nº " + id + " excluído com sucesso!");
       })
