@@ -2,23 +2,23 @@ import React, { Component } from "react";
 import { Switch, Route, Link } from "react-router-dom";
 import "./css/App.css";
 import "./css/styles.css";
-//import App from "./App";
+import App from "./App";
 import Player from "./Player";
 import axios from "axios";
 
 class Login extends Component {
   state = {
     //Infos Login
-    usuarioLogin: null,
-    senhaLogin: null,
+    userLogin: null,
+    passwordLogin: null,
 
     //Infos Cadastro
-    nomeCadastro: null,
-    usuarioCadastro: null,
-    senhaCadastro: null,
-    confirmarSenhaCadastro: null,
+    nameResgister: null,
+    userRegister: null,
+    passwordRegister: null,
+    confirmPassword: null,
 
-    pagina: "",
+    pag: "",
 
     user: []
   };
@@ -32,22 +32,23 @@ class Login extends Component {
     });
   };
 
-  validarUsuario = () => {
-    this.refs.btnLogin.disabled = true;
+  validateUser = () => {
+    this.refs.btnLogin.disabled;
     if (
-      document.getElementById("usuarioLogin").value === this.state.user.login &&
-      document.getElementById("senhaLogin").value === this.state.user.password
+      document.getElementById("userLogin").value == this.state.user.login &&
+      document.getElementById("passwordLogin").value == this.state.user.password
     ) {
       this.setState({
-        pagina: "/Player"
+        pag: "/Player"
       });
+      this.refs.btnLogin.enabled;
     } else {
       this.setState({
-        pagina: "/Login"
+        pag: "/Login"
       });
       alert("Informe Usuario e senha corretos!");
+      this.refs.btnLogin.enabled;
     }
-    this.refs.btnLogin.disabled = false;
   };
 
   render = () => {
@@ -62,8 +63,8 @@ class Login extends Component {
                 <input
                   type="text"
                   className="form-control"
-                  id="usuarioLogin"
-                  value={this.state.usuarioLogin}
+                  id="userLogin"
+                  value={this.state.userLogin}
                 />
               </div>
               <div className="form-group">
@@ -71,18 +72,18 @@ class Login extends Component {
                 <input
                   type="password"
                   className="form-control"
-                  id="senhaLogin"
-                  value={this.state.senhaLogin}
+                  id="passwordLogin"
+                  value={this.state.passwordLogin}
                 />
               </div>
               <div className="form-group">
-                <Link to={this.state.pagina}>
+                <Link to={this.state.pag}>
                   {" "}
                   <input
                     type="submit"
                     className="btnSubmit"
                     value="Login"
-                    onClick={this.validarUsuario}
+                    onClick={this.validateUser}
                     ref="btnLogin"
                   />
                 </Link>
@@ -97,7 +98,7 @@ class Login extends Component {
                 <input
                   type="text"
                   className="form-control"
-                  value={this.state.nomeCadastro}
+                  value={this.state.nameResgister}
                 />
               </div>
               <div className="form-group">
@@ -105,7 +106,7 @@ class Login extends Component {
                 <input
                   type="text"
                   className="form-control"
-                  value={this.state.usuarioCadastro}
+                  value={this.state.userRegister}
                 />
               </div>
               <div className="form-group">
@@ -113,7 +114,7 @@ class Login extends Component {
                 <input
                   type="password"
                   className="form-control"
-                  value={this.state.senhaCadastro}
+                  value={this.state.passwordRegister}
                 />
               </div>
               <div className="form-group">
@@ -121,7 +122,7 @@ class Login extends Component {
                 <input
                   type="password"
                   className="form-control"
-                  value={this.state.confirmarSenhaCadastro}
+                  value={this.state.confirmPassword}
                 />
               </div>
               <div className="form-group">

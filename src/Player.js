@@ -15,7 +15,7 @@ class App extends Component {
   state = {
     //Info Player
     audio: document.getElementsByTagName("audio"),
-    velocidade: null,
+    speed: null,
 
     //Infos User
     userId: null,
@@ -23,49 +23,49 @@ class App extends Component {
     //Infos Audio
     audioId: null,
     link: null,
-    duracao: {
+    duration: {
       total: null,
-      hor: null,
+      hour: null,
       min: null,
       seg: null
     },
-    legendaEN: null,
-    legendaPT: null,
+    subtitleEN: null,
+    subtitlePT: null,
 
-    tituloEN: null,
-    textoEN: null,
-    tituloPT: null,
-    textoPT: null,
+    titleEN: null,
+    transcriptionEN: null,
+    titlePT: null,
+    transcriptionPT: null,
 
     //Infos Marcadores
-    marcadores: []
+    markings: []
   };
 
   componentDidMount = () => {
     axios.get("http://idiomabackend.herokuapp.com/audio/").then(result => {
       const audioId = result.data[0].id;
       const link = result.data[0].link;
-      const legendaEN = result.data[0].englishSubtitle;
-      const legendaPT = result.data[0].portugueseSubtitle;
+      const subtitleEN = result.data[0].englishSubtitle;
+      const subtitlePT = result.data[0].portugueseSubtitle;
       const total = result.data[0].duration;
-      const tituloEN = result.data[0].englishTitle;
-      const textoEN = result.data[0].englishTranscription;
-      const tituloPT = result.data[0].portugueseTitle;
-      const textoPT = result.data[0].portugueseTranscription;
+      const titleEN = result.data[0].englishTitle;
+      const transcriptionEN = result.data[0].englishTranscription;
+      const titlePT = result.data[0].portugueseTitle;
+      const transcriptionPT = result.data[0].portugueseTranscription;
 
       this.setState({
-        velocidade: "1.0x",
+        speed: "1.0x",
         audioId: audioId,
         link: link,
-        duracao: {
+        duration: {
           total: total
         },
-        legendaEN: legendaEN,
-        legendaPT: legendaPT,
-        tituloEN: tituloEN,
-        textoEN: textoEN,
-        tituloPT: tituloPT,
-        textoPT: textoPT
+        subtitleEN: subtitleEN,
+        subtitlePT: subtitlePT,
+        titleEN: titleEN,
+        transcriptionEN: transcriptionEN,
+        titlePT: titlePT,
+        transcriptionPT: transcriptionPT
       });
 
       this.converterSegundos(total);
@@ -84,9 +84,9 @@ class App extends Component {
     axios
       .get(`https://idiomabackend.herokuapp.com/marking?userId=1&audioId=1`)
       .then(result => {
-        const marcadores = result.data;
+        const marking = result.data;
         this.setState({
-          marcadores: marcadores
+          markings: marking
         });
       });
   };
@@ -111,34 +111,34 @@ class App extends Component {
   };
 
   gerarMarcacao = () => {
-    if (this.state.audio[0].currentTime < 1) var tempoMinimo = 0;
-    else tempoMinimo = this.state.audio[0].currentTime - 1;
+    if (this.state.audio[0].currentTime < 1) var minimumTime = 0;
+    else minimumTime = this.state.audio[0].currentTime - 1;
 
-    const novoMarcador = {
+    const newMarking = {
       audioId: this.state.audioId,
       userId: this.state.userId,
-      begin: tempoMinimo,
+      begin: minimumTime,
       end: this.state.audio[0].currentTime + 3
     };
-    this.adicionarMarcador(novoMarcador);
+    this.adicionarMarcador(newMarking);
   };
 
-  tocarMarcacao = marcadorBegin => {
-    this.state.audio[0].currentTime = marcadorBegin;
+  tocarMarcacao = markingBegin => {
+    this.state.audio[0].currentTime = markingBegin;
     this.state.audio[0].play();
     setTimeout(() => {
       this.state.audio[0].pause();
     }, 5000);
   };
 
-  converterSegundos = duracao => {
-    const hor = Math.trunc(duracao / 3600);
-    const min = Math.trunc(duracao / 60);
-    const seg = duracao % 60;
+  converterSegundos = duration => {
+    const hour = Math.trunc(duration / 3600);
+    const min = Math.trunc(duration / 60);
+    const seg = duration % 60;
 
     this.setState({
-      duracao: {
-        hor: hor,
+      duration: {
+        hour: hour,
         min: min,
         seg: seg
       }
@@ -158,10 +158,10 @@ class App extends Component {
       ? (this.refs.bMenos.disabled = true)
       : (this.refs.bMenos.disabled = false);
 
-    const velocidade = this.state.audio[0].playbackRate.toFixed(1).toString();
+    const speed = this.state.audio[0].playbackRate.toFixed(1).toString();
 
     this.setState({
-      velocidade: velocidade + "x"
+      speed: speed + "x"
     });
   };
 
@@ -178,8 +178,8 @@ class App extends Component {
       this.refs.titlePT.textContent = "";
       this.refs.txtPT.textContent = "";
     } else {
-      this.refs.titlePT.textContent = this.state.tituloPT;
-      this.refs.txtPT.textContent = this.state.textoPT;
+      this.refs.titlePT.textContent = this.state.titlePT;
+      this.refs.txtPT.textContent = this.state.transcriptionPT;
     }
   };
 
@@ -188,8 +188,8 @@ class App extends Component {
       this.refs.titleEN.textContent = "";
       this.refs.txtEN.textContent = "";
     } else {
-      this.refs.titleEN.textContent = this.state.tituloEN;
-      this.refs.txtEN.textContent = this.state.textoEN;
+      this.refs.titleEN.textContent = this.state.titleEN;
+      this.refs.txtEN.textContent = this.state.transcriptionEN;
     }
   };
 
@@ -277,7 +277,7 @@ class App extends Component {
             className="btn btn-light btn-text"
             id="velocidade"
           >
-            {this.state.velocidade}
+            {this.state.speed}
           </label>
           <button
             type="button"
@@ -302,10 +302,10 @@ class App extends Component {
         <div className="card-body">
           <h6 className="card-subtitle mb-2 text-muted">Texto em Português</h6>
           <h5 className="card-title" ref="titlePT">
-            {this.state.tituloPT}
+            {this.state.titlePT}
           </h5>
           <p className="card-text" ref="txtPT">
-            {this.state.textoPT}
+            {this.state.transcriptionPT}
           </p>
         </div>
       </div>
@@ -354,10 +354,10 @@ class App extends Component {
         <div className="card-body">
           <h6 className="card-subtitle mb-2 text-muted">Texto em Inglês</h6>
           <h5 className="card-title" ref="titleEN">
-            {this.state.tituloEN}
+            {this.state.titleEN}
           </h5>
           <p className="card-text" ref="txtEN">
-            {this.state.textoEN}
+            {this.state.transcriptionEN}
           </p>
         </div>
       </div>
@@ -410,16 +410,16 @@ class App extends Component {
                 </tr>
               </thead>
               <tbody>
-                {this.state.marcadores.map(marcador => {
+                {this.state.markings.map(marking => {
                   return (
-                    <tr key={marcador.id}>
-                      <td>{marcador.begin}</td>
-                      <td>{marcador.end}</td>
+                    <tr key={marking.id}>
+                      <td>{marking.begin}</td>
+                      <td>{marking.end}</td>
                       <td>
                         <a
                           href="#play"
                           onClick={() => {
-                            this.tocarMarcacao(marcador.begin);
+                            this.tocarMarcacao(marking.begin);
                           }}
                         >
                           <Glyphicon glyph="play" />
@@ -428,7 +428,7 @@ class App extends Component {
                         <a
                           href="#trash"
                           onClick={() => {
-                            this.excluirMarcarao(marcador.id);
+                            this.excluirMarcarao(marking.id);
                           }}
                         >
                           <Glyphicon glyph="trash" />
