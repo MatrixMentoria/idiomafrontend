@@ -1,13 +1,12 @@
 .player-wrapper {
   position: relative;
-  left: 18%;
+  left: 2%;
   bottom: 85%;
-  margin-top: -228px;
+  margin-top: -300px;
   margin-bottom: 40px;
 }
 
 .react-player {
-  position: absoluta;
   top: 0;
   left: 0;
 }

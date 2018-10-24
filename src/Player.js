@@ -203,6 +203,7 @@ class App extends Component {
   render = () => {
     return (
       <div className="container">
+        {this.ControlesPagina()}
         {this.Player()}
         {this.ControlesPlayer()}
         <div className="row">
@@ -210,7 +211,6 @@ class App extends Component {
           {this.Imagens_PT_EN_Null()}
           {this.CardDois()}
         </div>
-        {this.ControlesPagina()}
         {this.MarcadoresLista()}
       </div>
     );
@@ -228,7 +228,9 @@ class App extends Component {
             playbackRate={1.0}
             playing={false}
             muted={false}
+            width={1140}
             controls
+            config={{ file: { attributes: { controlsList: "nodownload" } } }}
           />
         </div>
       </div>
@@ -367,12 +369,12 @@ class App extends Component {
   ControlesPagina = () => {
     return (
       <div className="row wrapper-row">
-        <div className="col-12 col-md-4">
+        <div className="col-12 col-md-1">
           <button type="button" className="btn btn-light btn-text">
-            Voltar aos textos
+            Voltar aos áudios
           </button>
         </div>
-        <div className="col-12 col-md-4">
+        {/*<div className="col-12 col-md-4">
           <button type="button" className="btn btn-light btn-text">
             Repetição do texto
           </button>
@@ -381,7 +383,7 @@ class App extends Component {
           <button type="button" className="btn btn-light btn-text ">
             Ir para repetições
           </button>
-        </div>
+        </div>*/}
       </div>
     );
   };
