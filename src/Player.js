@@ -42,7 +42,7 @@ class App extends Component {
   };
 
   componentDidMount = () => {
-    axios.get("http://idiomabackend.herokuapp.com/audio/").then(result => {
+    axios.get("https://idiomabackend.herokuapp.com/audio/").then(result => {
       const audioId = result.data[0].id;
       const link = result.data[0].link;
       const subtitleEN = result.data[0].englishSubtitle;
@@ -72,7 +72,7 @@ class App extends Component {
       this.popularListaMarcadores();
     });
 
-    axios.get("http://idiomabackend.herokuapp.com/user/1").then(result => {
+    axios.get("https://idiomabackend.herokuapp.com/user/1").then(result => {
       const userId = result.data.id;
       this.setState({
         userId: userId
@@ -93,20 +93,39 @@ class App extends Component {
 
   adicionarMarcador = novoMarcador => {
     axios
-      .post("http://idiomabackend.herokuapp.com/marking/", novoMarcador)
-      .then(result => {
-        alert("Marcador nº " + result.data.id + " cadastrado com sucesso!");
+      .post("https://idiomabackend.herokuapp.com/marking/", novoMarcador)
+      .then(() => {
+        document.getElementById("markAlert").innerHTML =
+          '<div class="alert alert-success" role="alert"><strong>Sucesso!</strong> Novo marcador criado.</div>';
+      })
+      .catch(() => {
+        document.getElementById("markAlert").innerHTML =
+          '<div class="alert alert-danger" role="alert"><strong>Erro!</strong> Falha ao criar novo marcador.</div>';
+      })
+      .then(() => {
+        window.scrollTo(0,0);
+        setTimeout(() => {
+          document.getElementById("markAlert").innerHTML = '';
+        }, 3000);
       });
   };
 
   excluirMarcarao = id => {
     axios
-      .delete("http://idiomabackend.herokuapp.com/marking/" + id)
+      .delete("https://idiomabackend.herokuapp.com/marking/" + id)
       .then(() => {
-        alert("Marcador nº " + id + " excluído com sucesso!");
+        document.getElementById("markAlert").innerHTML =
+          '<div class="alert alert-success" role="alert"><strong>Sucesso!</strong> Marcador excluído.</div>';
+      })
+      .catch(() => {
+        document.getElementById("markAlert").innerHTML =
+          '<div class="alert alert-danger" role="alert"><strong>Erro!</strong> Falha ao excluir marcador.</div>';
       })
       .then(() => {
-        window.location.reload(true);
+        window.scrollTo(0,0);
+        setTimeout(() => {
+          document.getElementById("markAlert").innerHTML = '';
+        }, 3000);
       });
   };
 
@@ -204,6 +223,7 @@ class App extends Component {
     return (
       <div className="container">
         {this.ControlesPagina()}
+        <div id="markAlert" />
         {this.Player()}
         {this.ControlesPlayer()}
         <div className="row">
