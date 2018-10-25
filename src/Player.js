@@ -7,9 +7,7 @@ import axios from "axios";
 import img1 from "./medias/bandeiradobrasil.png";
 import img2 from "./medias/bandeiradoseua.png";
 import img3 from "./medias/hideicon.png";
-import img4 from "./medias/retornar3s.png";
-import img5 from "./medias/avancar3s.png";
-import img6 from "./medias/bookmark.png";
+import ReactTooltip from "react-tooltip";
 
 class App extends Component {
   state = {
@@ -85,15 +83,14 @@ class App extends Component {
       var audio = document.getElementsByTagName("audio");
       // ctrl + espaço
       if (event.ctrlKey && keycode === 32) {
-        if(audio[0].paused){
+        if (audio[0].paused) {
           window.scrollTop;
           audio[0].play();
-          
-        }else{
+        } else {
           window.scrollTop;
           audio[0].pause();
         }
-        console.log(audio)
+        console.log(audio);
         console.log("*", keycode);
       }
       // ctrl + seta esquerda
@@ -108,7 +105,7 @@ class App extends Component {
       }
       //ctrl + "m"
       if (event.ctrlKey && keycode === 77) {
-        document.getElementById("icon-marcador").click();
+        document.getElementById("icon-advance").click();
         console.log("****", keycode);
       }
       //"+" ou "="
@@ -312,60 +309,55 @@ class App extends Component {
   ControlesPlayer = () => {
     return (
       <div className="row wrapper-row">
-        <div className="play-audio-buttons">
-          <input
-            type="image"
-            alt="img"
-            src={img6}
-            id="icon-marcador"
+        <div class="play-audio-buttons">
+          <Glyphicon
+            glyph="glyphicon glyphicon-bookmark icon-highlighter"
             onClick={this.gerarMarcacao}
           />
-          <input
-            type="image"
-            alt="img"
-            src={img4}
-            id="icon-retornar"
-            onClick={this.voltarTresSegundos}
-          />
-          <input
-            type="image"
-            alt="img"
-            src={img5}
-            id="icon-avancar"
-            onClick={this.avancarTresSegundos}
-          />
-          <button
-            type="button"
-            className="btn btn-light btn-text"
-            id="menos"
-            onClick={() => {
-              this.alterarVelocidadeAudio(false);
-            }}
-            ref="bMenos"
-          >
-            {" "}
-            -{" "}
-          </button>
-          <label
-            type="button"
-            className="btn btn-light btn-text"
-            id="velocidade"
-          >
-            {this.state.speed}
-          </label>
-          <button
-            type="button"
-            className="btn btn-light btn-text"
-            id="mais"
-            onClick={() => {
-              this.alterarVelocidadeAudio(true);
-            }}
-            ref="bMais"
-          >
-            {" "}
-            +{" "}
-          </button>
+
+          <p data-tip=" Retroceder 3 seg ">
+            <Glyphicon
+              glyph="glyphicon glyphicon-repeat left-icon"
+              onClick={this.voltarTresSegundos}
+            />
+          </p>
+          <ReactTooltip />
+
+          <p data-tip=" Avançar 3 seg ">
+            <Glyphicon
+              glyph="glyphicon glyphicon-repeat icon-advance"
+              onClick={this.avancarTresSegundos}
+            />
+          </p>
+          <ReactTooltip />
         </div>
+        <button
+          type="button"
+          className="btn btn-light btn-text"
+          id="menos"
+          onClick={() => {
+            this.alterarVelocidadeAudio(false);
+          }}
+          ref="bMenos"
+        >
+          {" "}
+          -{" "}
+        </button>
+        <label type="button" className="btn btn-light btn-text" id="velocidade">
+          {this.state.speed}
+        </label>
+        <button
+          type="button"
+          className="btn btn-light btn-text"
+          id="mais"
+          onClick={() => {
+            this.alterarVelocidadeAudio(true);
+          }}
+          ref="bMais"
+        >
+          {" "}
+          +{" "}
+        </button>
       </div>
     );
   };
