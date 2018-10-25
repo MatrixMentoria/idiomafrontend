@@ -42,7 +42,7 @@ class App extends Component {
   };
 
   componentDidMount = () => {
-    axios.get("https://idiomabackend.herokuapp.com/audio/").then(result => {
+    axios.get("http://idiomabackend.herokuapp.com/audio/").then(result => {
       const audioId = result.data[0].id;
       const link = result.data[0].link;
       const subtitleEN = result.data[0].englishSubtitle;
@@ -72,7 +72,7 @@ class App extends Component {
       this.popularListaMarcadores();
     });
 
-    axios.get("https://idiomabackend.herokuapp.com/user/1").then(result => {
+    axios.get("http://idiomabackend.herokuapp.com/user/1").then(result => {
       const userId = result.data.id;
       this.setState({
         userId: userId
@@ -93,7 +93,7 @@ class App extends Component {
 
   adicionarMarcador = novoMarcador => {
     axios
-      .post("https://idiomabackend.herokuapp.com/marking/", novoMarcador)
+      .post("http://idiomabackend.herokuapp.com/marking/", novoMarcador)
       .then(() => {
         document.getElementById("markAlert").innerHTML =
           '<div class="alert alert-success" role="alert"><strong>Sucesso!</strong> Novo marcador criado.</div>';
@@ -103,28 +103,34 @@ class App extends Component {
           '<div class="alert alert-danger" role="alert"><strong>Erro!</strong> Falha ao criar novo marcador.</div>';
       })
       .then(() => {
-        window.scrollTo(0,0);
+        window.scrollTo(0, 0);
         setTimeout(() => {
-          document.getElementById("markAlert").innerHTML = '';
+          document.getElementById("markAlert").innerHTML = "";
+        }, 3000);
+        setTimeout(() => {
+          window.location.reload(true);
         }, 3000);
       });
   };
 
   excluirMarcarao = id => {
     axios
-      .delete("https://idiomabackend.herokuapp.com/marking/" + id)
+      .delete("http://idiomabackend.herokuapp.com/marking/" + id)
       .then(() => {
         document.getElementById("markAlert").innerHTML =
-          '<div class="alert alert-success" role="alert"><strong>Sucesso!</strong> Marcador excluído.</div>';
+          '<div class="alert alert-info" role="alert"><strong>Sucesso!</strong> Marcador excluído.</div>';
       })
       .catch(() => {
         document.getElementById("markAlert").innerHTML =
-          '<div class="alert alert-danger" role="alert"><strong>Erro!</strong> Falha ao excluir marcador.</div>';
+          '<div class="alert alert-warning" role="alert"><strong>Erro!</strong> Falha ao excluir marcador.</div>';
       })
       .then(() => {
-        window.scrollTo(0,0);
+        window.scrollTo(0, 0);
         setTimeout(() => {
-          document.getElementById("markAlert").innerHTML = '';
+          document.getElementById("markAlert").innerHTML = "";
+        }, 3000);
+        setTimeout(() => {
+          window.location.reload(true);
         }, 3000);
       });
   };
