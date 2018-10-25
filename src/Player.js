@@ -78,6 +78,52 @@ class App extends Component {
         userId: userId
       });
     });
+
+    //manipulação do player usando o teclado
+    document.onkeydown = function(event) {
+      var keycode = event.keyCode ? event.keyCode : event.which;
+      var audio = document.getElementsByTagName("audio");
+      // ctrl + espaço
+      if (event.ctrlKey && keycode === 32) {
+        if(audio[0].paused){
+          window.scrollTop;
+          audio[0].play();
+          
+        }else{
+          window.scrollTop;
+          audio[0].pause();
+        }
+        console.log(audio)
+        console.log("*", keycode);
+      }
+      // ctrl + seta esquerda
+      if (event.ctrlKey && keycode === 37) {
+        audio[0].currentTime -= 3;
+        console.log("**", keycode);
+      }
+      // ctrl + seta direita
+      if (event.ctrlKey && keycode === 39) {
+        audio[0].currentTime += 3;
+        console.log("***", keycode);
+      }
+      //ctrl + "m"
+      if (event.ctrlKey && keycode === 77) {
+        document.getElementById("icon-marcador").click();
+        console.log("****", keycode);
+      }
+      //"+" ou "="
+      if (keycode === 187) {
+        document.getElementById("mais").click();
+        console.log("****", keycode);
+      }
+      //"-"
+      if (keycode === 189) {
+        document.getElementById("menos").click();
+        console.log("****", keycode);
+      }
+
+      //alert(keycode);
+    };
   };
 
   popularListaMarcadores = () => {
