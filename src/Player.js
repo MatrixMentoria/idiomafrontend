@@ -9,6 +9,8 @@ import img2 from "./medias/bandeiradoseua.png";
 import img3 from "./medias/hideicon.png";
 import ReactTooltip from "react-tooltip";
 
+import Collapse from "react-css-collapse";
+
 class App extends Component {
   state = {
     //Info Player
@@ -36,7 +38,10 @@ class App extends Component {
     transcriptionPT: null,
 
     //Infos Marcadores
-    markings: []
+    markings: [],
+
+    //collapse
+    isOpen: false
   };
 
   componentDidMount = () => {
@@ -275,12 +280,25 @@ class App extends Component {
         <div id="markAlert" />
         {this.Player()}
         {this.ControlesPlayer()}
+        {this.MarkLista()}
         <div className="row">
           {this.CardUm()}
           {this.Imagens_PT_EN_Null()}
           {this.CardDois()}
         </div>
-        {this.MarcadoresLista()}
+      </div>
+    );
+  };
+
+  MarkLista = () => {
+    return (
+      <div>
+        <button onClick={() => this.setState({ isOpen: !this.state.isOpen })}>
+          Marcadores
+        </button>
+        <Collapse isOpen={this.state.isOpen}>
+          <div>{this.MarcadoresLista()}</div>
+        </Collapse>
       </div>
     );
   };
@@ -438,16 +456,6 @@ class App extends Component {
             Voltar aos áudios
           </button>
         </div>
-        {/*<div className="col-12 col-md-4">
-          <button type="button" className="btn btn-light btn-text">
-            Repetição do texto
-          </button>
-        </div>
-        <div className="col-12 col-md-4">
-          <button type="button" className="btn btn-light btn-text ">
-            Ir para repetições
-          </button>
-        </div>*/}
       </div>
     );
   };
@@ -467,7 +475,7 @@ class App extends Component {
           </div>
 
           <div>
-            <table style={{ marginTop: 10 }} className="table table-hover">
+            <table className="table table-hover">
               <thead>
                 <tr>
                   <th>Início</th>
