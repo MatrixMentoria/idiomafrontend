@@ -7,7 +7,10 @@ import axios from "axios";
 import img1 from "./medias/bandeiradobrasil.png";
 import img2 from "./medias/bandeiradoseua.png";
 import img3 from "./medias/hideicon.png";
+import img4 from "./medias/Legendas.png";
+import img5 from "./medias/teclado.png"
 import ReactTooltip from "react-tooltip";
+import Modal from "react-responsive-modal";
 
 import Collapse from "react-css-collapse";
 
@@ -41,7 +44,10 @@ class App extends Component {
     markings: [],
 
     //collapse
-    isOpen: false
+    isOpen: false,
+
+    //modal
+    show: false
   };
 
   componentDidMount = () => {
@@ -275,17 +281,40 @@ class App extends Component {
 
   render = () => {
     return (
-      <div className="container">
-        {this.ControlesPagina()}
-        <div id="markAlert" />
-        {this.Player()}
-        {this.ControlesPlayer()}
-        {this.MarkLista()}
-        <div className="row">
-          {this.CardUm()}
-          {this.Imagens_PT_EN_Null()}
-          {this.CardDois()}
+      <div>
+        <div className="container" id="corpo">
+          {this.ControlesPagina()}
+          <div id="markAlert" />
+          {this.Player()}
+          {this.ControlesPlayer()}
+          {this.Modal()}
+          {this.MarkLista()}
+          <div className="row">
+            {this.CardUm()}
+            {this.Imagens_PT_EN_Null()}
+            {this.CardDois()}
+          </div>
         </div>
+      </div>
+    );
+  };
+
+  Modal = () => {
+    return (
+      <div>
+        <input
+              type="image"
+              alt="img"
+              src={img5}
+              id="btn-modal"
+              onClick={() => this.setState({ show: !this.state.show })}
+            />
+        <Modal
+          open={this.state.show}
+          onClose={() => this.setState({ show: !this.state.show })}
+        >
+          <img src={img4} />
+        </Modal>
       </div>
     );
   };
@@ -293,7 +322,11 @@ class App extends Component {
   MarkLista = () => {
     return (
       <div>
-        <button onClick={() => this.setState({ isOpen: !this.state.isOpen })}>
+        <button
+          className="btn btn-primary"
+          id="btn-marcadores"
+          onClick={() => this.setState({ isOpen: !this.state.isOpen })}
+        >
           Marcadores
         </button>
         <Collapse isOpen={this.state.isOpen}>
@@ -327,7 +360,7 @@ class App extends Component {
   ControlesPlayer = () => {
     return (
       <div className="row wrapper-row">
-        <div class="play-audio-buttons">
+        <div className="play-audio-buttons">
           <Glyphicon
             glyph="glyphicon glyphicon-bookmark icon-highlighter"
             onClick={this.gerarMarcacao}
@@ -462,7 +495,10 @@ class App extends Component {
 
   MarcadoresLista = () => {
     return (
-      <div>
+      <div
+        style={{ overflow: "auto", height: 200 }}
+        id="listaMarcadores"
+      >
         <h5
           className="navbar  justify-content-center"
           style={{ color: "#000" }}
