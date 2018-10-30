@@ -8,7 +8,7 @@ import img1 from "./medias/bandeiradobrasil.png";
 import img2 from "./medias/bandeiradoseua.png";
 import img3 from "./medias/hideicon.png";
 import img4 from "./medias/Legendas.png";
-import img5 from "./medias/teclado.png"
+import img5 from "./medias/teclado.png";
 import ReactTooltip from "react-tooltip";
 import Modal from "react-responsive-modal";
 
@@ -116,7 +116,7 @@ class App extends Component {
       }
       //ctrl + "m"
       if (event.ctrlKey && keycode === 77) {
-        document.getElementById("icon-advance").click();
+        document.getElementById("icon-marcador").click();
         console.log("****", keycode);
       }
       //"+" ou "="
@@ -287,7 +287,6 @@ class App extends Component {
           <div id="markAlert" />
           {this.Player()}
           {this.ControlesPlayer()}
-          {this.Modal()}
           {this.MarkLista()}
           <div className="row">
             {this.CardUm()}
@@ -295,26 +294,6 @@ class App extends Component {
             {this.CardDois()}
           </div>
         </div>
-      </div>
-    );
-  };
-
-  Modal = () => {
-    return (
-      <div>
-        <input
-              type="image"
-              alt="img"
-              src={img5}
-              id="btn-modal"
-              onClick={() => this.setState({ show: !this.state.show })}
-            />
-        <Modal
-          open={this.state.show}
-          onClose={() => this.setState({ show: !this.state.show })}
-        >
-          <img src={img4} />
-        </Modal>
       </div>
     );
   };
@@ -363,6 +342,7 @@ class App extends Component {
         <div className="play-audio-buttons">
           <Glyphicon
             glyph="glyphicon glyphicon-bookmark icon-highlighter"
+            id="icon-marcador"
             onClick={this.gerarMarcacao}
           />
 
@@ -409,6 +389,19 @@ class App extends Component {
           {" "}
           +{" "}
         </button>
+        <input
+          type="image"
+          alt="img"
+          src={img5}
+          id="btn-modal"
+          onClick={() => this.setState({ show: !this.state.show })}
+        />
+        <Modal
+          open={this.state.show}
+          onClose={() => this.setState({ show: !this.state.show })}
+        >
+          <img src={img4} />
+        </Modal>
       </div>
     );
   };
@@ -495,10 +488,7 @@ class App extends Component {
 
   MarcadoresLista = () => {
     return (
-      <div
-        style={{ overflow: "auto", height: 200 }}
-        id="listaMarcadores"
-      >
+      <div style={{ overflow: "auto", height: 200 }} id="listaMarcadores">
         <h5
           className="navbar  justify-content-center"
           style={{ color: "#000" }}

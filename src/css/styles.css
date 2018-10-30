@@ -48,6 +48,14 @@
   bottom: 20px;
 }
 
+#btn-modal {
+  position: relative;
+  width: 50px;
+  height: 50px;
+  left: 850px;
+  bottom: 25px;
+}
+
 .icon-highlighter {
   width: 25px;
   position: relative;
@@ -135,9 +143,10 @@
 }
 
 #corpo {
-  width: 100%;
-  height: 100%;
-  margin-left: 2%;
+  position: relative;
+  width: 80%;
+  height: 80%;
+  right: 20px;
 }
 
 .modal {
@@ -178,13 +187,6 @@
   width: 100%;
   margin: 10px 0 0;
 }
-
-#btn-modal {
-  width: 50px;
-  height: 50px;
-  margin-left: 96%;
-}
-
 
 /*INICIO ---- login*/
 .login-container {
