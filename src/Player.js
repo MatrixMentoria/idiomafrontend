@@ -93,7 +93,7 @@ class App extends Component {
       var keycode = event.keyCode ? event.keyCode : event.which;
       var audio = document.getElementsByTagName("audio");
       // ctrl + espaço
-      if (event.ctrlKey && keycode === 32) {
+      if (keycode === 32) {
         if (audio[0].paused) {
           window.scrollTop;
           audio[0].play();
@@ -105,17 +105,17 @@ class App extends Component {
         console.log("*", keycode);
       }
       // ctrl + seta esquerda
-      if (event.ctrlKey && keycode === 37) {
+      if (keycode === 37) {
         audio[0].currentTime -= 3;
         console.log("**", keycode);
       }
       // ctrl + seta direita
-      if (event.ctrlKey && keycode === 39) {
+      if (keycode === 39) {
         audio[0].currentTime += 3;
         console.log("***", keycode);
       }
       //ctrl + "m"
-      if (event.ctrlKey && keycode === 77) {
+      if (keycode === 77) {
         document.getElementById("icon-marcador").click();
         console.log("****", keycode);
       }
