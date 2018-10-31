@@ -180,11 +180,9 @@ class App extends Component {
       })
       .then(() => {
         window.scrollTo(0, 0);
+        document.getElementById(id.toString()).remove();
         setTimeout(() => {
           document.getElementById("markAlert").innerHTML = "";
-        }, 3000);
-        setTimeout(() => {
-          window.location.reload(true);
         }, 3000);
       });
   };
@@ -512,7 +510,7 @@ class App extends Component {
               <tbody>
                 {this.state.markings.map(marking => {
                   return (
-                    <tr key={marking.id}>
+                    <tr key={marking.id} id={marking.id}>
                       <td>{marking.begin}</td>
                       <td>{marking.end}</td>
                       <td>
