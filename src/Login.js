@@ -9,14 +9,14 @@ import axios from "axios";
 class Login extends Component {
   state = {
     //Infos Login
-    userLogin: null,
-    passwordLogin: null,
+    userLogin: "",
+    passwordLogin: "",
 
     //Infos Cadastro
-    nameResgister: null,
-    userRegister: null,
-    passwordRegister: null,
-    confirmPassword: null,
+    nameResgister: "",
+    userRegister: "",
+    passwordRegister: "",
+    confirmPassword: "",
 
     pag: "",
 
@@ -64,7 +64,7 @@ class Login extends Component {
                   type="text"
                   className="form-control"
                   id="userLogin"
-                  value={this.state.userLogin}
+                  defaultValue={this.state.userLogin}
                 />
               </div>
               <div className="form-group">
@@ -73,7 +73,7 @@ class Login extends Component {
                   type="password"
                   className="form-control"
                   id="passwordLogin"
-                  value={this.state.passwordLogin}
+                  defaultValue={this.state.passwordLogin}
                 />
               </div>
               <div className="form-group">
@@ -98,7 +98,7 @@ class Login extends Component {
                 <input
                   type="text"
                   className="form-control"
-                  value={this.state.nameResgister}
+                  defaultValue={this.state.nameResgister}
                 />
               </div>
               <div className="form-group">
@@ -106,7 +106,7 @@ class Login extends Component {
                 <input
                   type="text"
                   className="form-control"
-                  value={this.state.userRegister}
+                  defaultValue={this.state.userRegister}
                 />
               </div>
               <div className="form-group">
@@ -114,7 +114,7 @@ class Login extends Component {
                 <input
                   type="password"
                   className="form-control"
-                  value={this.state.passwordRegister}
+                  defaultValue={this.state.passwordRegister}
                 />
               </div>
               <div className="form-group">
@@ -122,7 +122,7 @@ class Login extends Component {
                 <input
                   type="password"
                   className="form-control"
-                  value={this.state.confirmPassword}
+                  defaultValue={this.state.confirmPassword}
                 />
               </div>
               <div className="form-group">

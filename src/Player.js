@@ -18,27 +18,27 @@ class App extends Component {
   state = {
     //Info Player
     audio: document.getElementsByTagName("audio"),
-    speed: null,
+    speed: "",
 
     //Infos User
-    userId: null,
+    userId: "",
 
     //Infos Audio
-    audioId: null,
-    link: null,
+    audioId: "",
+    link: "",
     duration: {
-      total: null,
-      hour: null,
-      min: null,
-      seg: null
+      total: "",
+      hour: "",
+      min: "",
+      seg: ""
     },
-    subtitleEN: null,
-    subtitlePT: null,
+    subtitleEN: "",
+    subtitlePT: "",
 
-    titleEN: null,
-    transcriptionEN: null,
-    titlePT: null,
-    transcriptionPT: null,
+    titleEN: "",
+    transcriptionEN: "",
+    titlePT: "",
+    transcriptionPT: "",
 
     //Infos Marcadores
     markings: [],
