@@ -485,6 +485,9 @@ class App extends Component {
   };
 
   MarcadoresLista = () => {
+    const ordenado = this.state.markings.sort(function(anterior,proximo){
+      return anterior.begin - proximo.begin;
+    });
     return (
       <div style={{ overflow: "auto", height: 200 }} id="listaMarcadores">
         <h5
@@ -508,9 +511,9 @@ class App extends Component {
                 </tr>
               </thead>
               <tbody>
-                {this.state.markings.map(marking => {
+                {ordenado.map(marking => {
                   return (
-                    <tr key={marking.id} id={marking.id}>
+                    <tr key={marking.id}>
                       <td>{marking.begin}</td>
                       <td>{marking.end}</td>
                       <td>
