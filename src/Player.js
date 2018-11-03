@@ -138,10 +138,16 @@ class App extends Component {
     axios
       .get(`https://idiomabackend.herokuapp.com/marking?userId=1&audioId=1`)
       .then(result => {
-        const marking = result.data;
-        this.setState({
-          markings: marking
-        });
+        //if abaixo temporário até update no código backend
+        if(result.data === ""){
+          this.setState({
+            markings: []
+          });
+        }else{
+          this.setState({
+            markings: result.data
+          });
+        }
       });
   };
 
@@ -513,7 +519,7 @@ class App extends Component {
               <tbody>
                 {ordenado.map(marking => {
                   return (
-                    <tr key={marking.id}>
+                    <tr key={marking.id} id={marking.id}>
                       <td>{marking.begin}</td>
                       <td>{marking.end}</td>
                       <td>
