@@ -1,142 +1,209 @@
 import React, { Component } from "react";
-import { Switch, Route, Link } from "react-router-dom";
+import { Switch, Redirect } from "react-router-dom";
 import "./css/App.css";
 import "./css/styles.css";
-import App from "./App";
-import Player from "./Player";
 import axios from "axios";
 
 class Login extends Component {
   state = {
-    //Infos Login
-    userLogin: "",
-    passwordLogin: "",
-
-    //Infos Cadastro
-    nameResgister: "",
-    userRegister: "",
-    passwordRegister: "",
-    confirmPassword: "",
-
-    pag: "",
-
-    user: []
+    isAuthorized: false
   };
 
-  componentDidMount = () => {
+  actionLogin = event => {
+    event.preventDefault();
+    event.stopPropagation();
+    const loginUser = {
+      email: this.refs.emailLogin.value,
+      password: this.refs.passwordLogin.value
+    };
     axios.get("https://idiomabackend.herokuapp.com/user/1").then(result => {
-      const user = result.data;
-      this.setState({
-        user: user
-      });
+      if (
+        result.data.email === loginUser.email &&
+        result.data.password === loginUser.password
+      ) {
+        this.setState({
+          isAuthorized: true
+        });
+      } else {
+        window.scrollTo(0, 0);
+        document.getElementById("markAlert").innerHTML =
+          '<div class="alert alert-danger" role="alert"><strong>Falha ao logar! </strong>E-mail ou senha inválidos.</div>';
+        setTimeout(() => {
+          document.getElementById("markAlert").innerHTML = "";
+        }, 4000);
+      }
     });
   };
 
-  validateUser = () => {
-    this.refs.btnLogin.disabled;
+  actionRegister = event => {
+    event.preventDefault();
+    event.stopPropagation();
     if (
-      document.getElementById("userLogin").value == this.state.user.login &&
-      document.getElementById("passwordLogin").value == this.state.user.password
+      this.refs.passwordRegister.value ===
+      this.refs.confirmPasswordRegister.value
     ) {
-      this.setState({
-        pag: "/Player"
-      });
-      this.refs.btnLogin.enabled;
+      const newUser = {
+        email: this.refs.emailRegister.value,
+        password: this.refs.passwordRegister.value,
+        personData: {
+          firstName: this.refs.firstnameRegister.value,
+          lastName: this.refs.lastnameRegister.value
+        }
+      };
+      //Conexão com o banco para cadastrar usuário a fazer
+      window.scrollTo(0, 0);
+      document.getElementById("markAlert").innerHTML =
+        '<div class="alert alert-success" role="alert"><strong>Sucesso! </strong>Usuário cadastrado!</div>';
+      setTimeout(() => {
+        document.getElementById("markAlert").innerHTML = "";
+      }, 4000);
     } else {
-      this.setState({
-        pag: "/Login"
-      });
-      alert("Informe Usuario e senha corretos!");
-      this.refs.btnLogin.enabled;
+      window.scrollTo(0, 0);
+      document.getElementById("markAlert").innerHTML =
+        '<div class="alert alert-danger" role="alert"><strong>Falha ao cadastrar! </strong>Senhas não estão iguais!</div>';
+      setTimeout(() => {
+        document.getElementById("markAlert").innerHTML = "";
+      }, 4000);
+    }
+  };
+
+  checkRedirect = () => {
+    if (this.state.isAuthorized) {
+      return <Redirect to="/Player" />;
     }
   };
 
   render = () => {
     return (
-      <div className="container login-container">
-        <div className="row">
-          <div className="col-md-6 login-form-1">
-            <h3>Login</h3>
-            <form>
-              <div className="form-group">
-                <label>Usuário</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="userLogin"
-                  defaultValue={this.state.userLogin}
-                />
-              </div>
-              <div className="form-group">
-                <label>Senha</label>
-                <input
-                  type="password"
-                  className="form-control"
-                  id="passwordLogin"
-                  defaultValue={this.state.passwordLogin}
-                />
-              </div>
-              <div className="form-group">
-                <Link to={this.state.pag}>
-                  {" "}
-                  <input
-                    type="submit"
-                    className="btnSubmit"
-                    value="Login"
-                    onClick={this.validateUser}
-                    ref="btnLogin"
-                  />
-                </Link>
-              </div>
-            </form>
+      <Switch>
+        <div className="container login-container">
+          <div id="markAlert" />
+          <div className="row">
+            {this.loginArea()}
+            {this.registerArea()}
           </div>
-          <div className="col-md-6 login-form-2">
-            <h3>Cadastre-se</h3>
-            <form>
-              <div className="form-group">
-                <label>Nome</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  defaultValue={this.state.nameResgister}
-                />
-              </div>
-              <div className="form-group">
-                <label>Usuário</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  defaultValue={this.state.userRegister}
-                />
-              </div>
-              <div className="form-group">
-                <label>Senha</label>
-                <input
-                  type="password"
-                  className="form-control"
-                  defaultValue={this.state.passwordRegister}
-                />
-              </div>
-              <div className="form-group">
-                <label>Confirme a sua senha</label>
-                <input
-                  type="password"
-                  className="form-control"
-                  defaultValue={this.state.confirmPassword}
-                />
-              </div>
-              <div className="form-group">
-                <input type="submit" className="btnSubmit" value="Salvar" />
-              </div>
-            </form>
-          </div>
+          {this.checkRedirect()}
         </div>
-        <main>
-          <Switch>
-            {/* <Route path="/" component={App} /> */}
-            <Route path="/Player" component={Player} />
-          </Switch>
-        </main>
+      </Switch>
+    );
+  };
+
+  loginArea = () => {
+    return (
+      <div className="col-md-6 login-form-1">
+        <h3>Login</h3>
+        <form
+          onSubmit={event => {
+            this.actionLogin(event);
+          }}
+        >
+          <div className="form-group">
+            <label>E-mail</label>
+            <input
+              type="email"
+              className="form-control"
+              id="emailLogin"
+              ref="emailLogin"
+              required
+            />
+          </div>
+          <div className="form-group">
+            <label>Senha</label>
+            <input
+              type="password"
+              className="form-control"
+              id="passwordLogin"
+              ref="passwordLogin"
+              required
+            />
+          </div>
+          <div className="form-group">
+            <button
+              type="submit"
+              className="btnSubmit"
+              id="btnLogin"
+              ref="btnLogin"
+            >
+              Salvar
+            </button>
+          </div>
+        </form>
+      </div>
+    );
+  };
+
+  registerArea = () => {
+    return (
+      <div className="col-md-6 login-form-2">
+        <h3>Cadastre-se</h3>
+        <form
+          onSubmit={event => {
+            this.actionRegister(event);
+          }}
+        >
+          <div className="form-group">
+            <label>Primeiro nome</label>
+            <input
+              type="text"
+              className="form-control"
+              id="firstnameRegister"
+              ref="firstnameRegister"
+              required
+            />
+          </div>
+          <div className="form-group">
+            <label>Último nome</label>
+            <input
+              type="text"
+              className="form-control"
+              id="lastnameRegister"
+              ref="lastnameRegister"
+              required
+            />
+          </div>
+          <div className="form-group">
+            <label>E-mail</label>
+            <input
+              type="email"
+              className="form-control"
+              id="emailRegister"
+              ref="emailRegister"
+              required
+            />
+          </div>
+          <div className="form-group">
+            <label>Senha</label>
+            <input
+              type="password"
+              className="form-control"
+              id="passwordRegister"
+              ref="passwordRegister"
+              required
+            />
+          </div>
+          <div className="form-group">
+            <label>Confirme a sua senha</label>
+            <input
+              type="password"
+              className="form-control"
+              id="confirmPasswordRegister"
+              ref="confirmPasswordRegister"
+              required
+            />
+          </div>
+          <div className="form-group">
+            <div className="form-group">
+              <button
+                type="submit"
+                className="btnSubmit"
+                id="btnRegister"
+                ref="btnRegister"
+              >
+                Salvar
+              </button>
+            </div>
+          </div>
+        </form>
       </div>
     );
   };
