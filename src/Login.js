@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Switch, Redirect } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 import "./css/App.css";
 import "./css/styles.css";
 import axios from "axios";
@@ -53,7 +53,11 @@ class Login extends Component {
       //Conexão com o banco para cadastrar usuário a fazer
       window.scrollTo(0, 0);
       document.getElementById("markAlert").innerHTML =
-        '<div class="alert alert-success" role="alert"><strong>Sucesso! </strong>Usuário cadastrado!</div>';
+        '<div class="alert alert-success" role="alert"><strong>Sucesso! </strong>Usuário ' +
+        newUser.personData.firstName +
+        " " +
+        newUser.personData.lastName +
+        " cadastrado!</div>";
       setTimeout(() => {
         document.getElementById("markAlert").innerHTML = "";
       }, 4000);
@@ -75,16 +79,14 @@ class Login extends Component {
 
   render = () => {
     return (
-      <Switch>
-        <div className="container login-container">
-          <div id="markAlert" />
-          <div className="row">
-            {this.loginArea()}
-            {this.registerArea()}
-          </div>
-          {this.checkRedirect()}
+      <div className="container login-container">
+        <div id="markAlert" />
+        <div className="row">
+          {this.loginArea()}
+          {this.registerArea()}
         </div>
-      </Switch>
+        {this.checkRedirect()}
+      </div>
     );
   };
 
