@@ -139,11 +139,11 @@ class App extends Component {
       .get(`https://idiomabackend.herokuapp.com/marking?userId=1&audioId=1`)
       .then(result => {
         //if abaixo temporário até update no código backend
-        if(result.data === ""){
+        if (result.data === "") {
           this.setState({
             markings: []
           });
-        }else{
+        } else {
           this.setState({
             markings: result.data
           });
@@ -322,7 +322,7 @@ class App extends Component {
   Player = () => {
     return (
       <div className="player-wrapper">
-        <div className="col-12 col-md-12">
+        <div className="col-12 col-md-12 col-lg-12 col-xl-12">
           <ReactPlayer
             className="react-player"
             url={this.state.link}
@@ -412,7 +412,7 @@ class App extends Component {
 
   CardUm = () => {
     return (
-      <div className="col-12 col-md-5 col-lg-5 card card-portuguese ">
+      <div className="col-12 col-md-5 col-lg-5 col-xl-5 card card-portuguese ">
         <div className="card-body">
           <h6 className="card-subtitle mb-2 text-muted">Texto em Português</h6>
           <h5 className="card-title" ref="titlePT">
@@ -428,7 +428,7 @@ class App extends Component {
 
   Imagens_PT_EN_Null = () => {
     return (
-      <div className="col-12 col-md-2 col-lg-2 ">
+      <div className="col-12 col-md-2 col-lg-2 col-xl-2">
         <div className="row flag">
           <div className="col-12">
             <input
@@ -464,7 +464,7 @@ class App extends Component {
 
   CardDois = () => {
     return (
-      <div className=" col-12 col-md-5 col-lg-5  card card-english">
+      <div className=" col-12 col-md-5 col-lg-5  col-xl-5 card card-english">
         <div className="card-body">
           <h6 className="card-subtitle mb-2 text-muted">Texto em Inglês</h6>
           <h5 className="card-title" ref="titleEN">
@@ -491,7 +491,7 @@ class App extends Component {
   };
 
   MarcadoresLista = () => {
-    const ordenado = this.state.markings.sort(function(anterior,proximo){
+    const ordenado = this.state.markings.sort(function(anterior, proximo) {
       return anterior.begin - proximo.begin;
     });
     return (
