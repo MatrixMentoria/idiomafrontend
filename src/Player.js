@@ -51,7 +51,7 @@ class App extends Component {
   };
 
   componentDidMount = () => {
-    axios.get("http://idiomabackend.herokuapp.com/audio/").then(result => {
+    axios.get("audio/").then(result => {
       const audioId = result.data[0].id;
       const link = result.data[0].link;
       const subtitleEN = result.data[0].englishSubtitle;
@@ -81,7 +81,7 @@ class App extends Component {
       this.popularListaMarcadores();
     });
 
-    axios.get("http://idiomabackend.herokuapp.com/user/1").then(result => {
+    axios.get("user/1").then(result => {
       const userId = result.data.id;
       this.setState({
         userId: userId
@@ -135,25 +135,23 @@ class App extends Component {
   };
 
   popularListaMarcadores = () => {
-    axios
-      .get(`https://idiomabackend.herokuapp.com/marking?userId=1&audioId=1`)
-      .then(result => {
-        //if abaixo temporário até update no código backend
-        if (result.data === "") {
-          this.setState({
-            markings: []
-          });
-        } else {
-          this.setState({
-            markings: result.data
-          });
-        }
-      });
+    axios.get(`marking?userId=1&audioId=1`).then(result => {
+      //if abaixo temporário até update no código backend
+      if (result.data === "") {
+        this.setState({
+          markings: []
+        });
+      } else {
+        this.setState({
+          markings: result.data
+        });
+      }
+    });
   };
 
   adicionarMarcador = novoMarcador => {
     axios
-      .post("http://idiomabackend.herokuapp.com/marking/", novoMarcador)
+      .post("marking/", novoMarcador)
       .then(() => {
         document.getElementById("markAlert").innerHTML =
           '<div class="alert alert-success" role="alert"><strong>Sucesso!</strong> Novo marcador criado.</div>';
@@ -175,7 +173,7 @@ class App extends Component {
 
   excluirMarcarao = id => {
     axios
-      .delete("http://idiomabackend.herokuapp.com/marking/" + id)
+      .delete("marking/" + id)
       .then(() => {
         document.getElementById("markAlert").innerHTML =
           '<div class="alert alert-info" role="alert"><strong>Sucesso!</strong> Marcador excluído.</div>';

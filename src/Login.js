@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Redirect } from "react-router-dom";
 import "./css/App.css";
 import "./css/styles.css";
-import axios from "axios";
+import authService from "./authService";
 
 class Login extends Component {
   state = {
@@ -27,34 +27,45 @@ class Login extends Component {
     event.preventDefault();
     event.stopPropagation();
 
-    axios
-      .get("https://idiomabackend.herokuapp.com/user/1")
+    authService
+      .authenticate(this.state.email, this.state.password)
       .then(result => {
-        if (
-          result.data.email === this.state.email &&
-          result.data.password === this.state.password
-        ) {
-          this.setState({
-            isAuthorized: true
-          });
-        } else {
-          window.scrollTo(0, 0);
-          document.getElementById("markAlert").innerHTML =
-            '<div class="alert alert-danger" role="alert"><strong>Falha ao logar! </strong>E-mail ou senha inválidos.</div>';
-          setTimeout(() => {
-            document.getElementById("markAlert").innerHTML = "";
-          }, 4000);
-        }
+        this.setState({
+          isAuthorized: result
+        });
       })
-      .catch(result => {
-        //pegue os erros com o catch
-        window.scrollTo(0, 0);
-        document.getElementById("markAlert").innerHTML =
-          '<div class="alert alert-danger" role="alert"><strong>Falha ao logar! </strong>E-mail ou senha inválidos.</div>';
-        setTimeout(() => {
-          document.getElementById("markAlert").innerHTML = "";
-        }, 4000);
+      .catch(error => {
+        console.log(error.response.data);
       });
+
+    // axios
+    //   .get("https://idiomabackend.herokuapp.com/user/1")
+    //   .then(result => {
+    //     if (
+    //       result.data.email === this.state.email &&
+    //       result.data.password === this.state.password
+    //     ) {
+    //       this.setState({
+    //         isAuthorized: true
+    //       });
+    //     } else {
+    //       window.scrollTo(0, 0);
+    //       document.getElementById("markAlert").innerHTML =
+    //         '<div class="alert alert-danger" role="alert"><strong>Falha ao logar! </strong>E-mail ou senha inválidos.</div>';
+    //       setTimeout(() => {
+    //         document.getElementById("markAlert").innerHTML = "";
+    //       }, 4000);
+    //     }
+    //   })
+    //   .catch(result => {
+    //     //pegue os erros com o catch
+    //     window.scrollTo(0, 0);
+    //     document.getElementById("markAlert").innerHTML =
+    //       '<div class="alert alert-danger" role="alert"><strong>Falha ao logar! </strong>E-mail ou senha inválidos.</div>';
+    //     setTimeout(() => {
+    //       document.getElementById("markAlert").innerHTML = "";
+    //     }, 4000);
+    //   });
   };
 
   actionRegister = event => {
@@ -124,6 +135,7 @@ class Login extends Component {
               className="form-control"
               name="email"
               onChange={this.handleInputChange}
+              value={this.state.email}
               required
             />
           </div>
@@ -133,6 +145,7 @@ class Login extends Component {
               type="password"
               className="form-control"
               email="password"
+              name="password"
               onChange={this.handleInputChange}
               required
             />

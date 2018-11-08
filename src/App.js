@@ -3,6 +3,9 @@ import { Switch, Route } from "react-router-dom";
 import "./css/App.css";
 import Login from "./Login";
 import Player from "./Player";
+import axios from "axios";
+
+axios.defaults.baseURL = "https://idiomabackend.herokuapp.com";
 
 class App extends Component {
   render = () => {
