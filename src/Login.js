@@ -6,33 +6,55 @@ import axios from "axios";
 
 class Login extends Component {
   state = {
-    isAuthorized: false
+    isAuthorized: false,
+    firstName: "",
+    lastName: "",
+    email: "",
+    password: ""
+  };
+
+  handleInputChange = event => {
+    const target = event.target;
+    const value = target.type === "checkbox" ? target.checked : target.value;
+    const name = target.name;
+
+    this.setState({
+      [name]: value
+    });
   };
 
   actionLogin = event => {
     event.preventDefault();
     event.stopPropagation();
-    const loginUser = {
-      email: this.refs.emailLogin.value,
-      password: this.refs.passwordLogin.value
-    };
-    axios.get("https://idiomabackend.herokuapp.com/user/1").then(result => {
-      if (
-        result.data.email === loginUser.email &&
-        result.data.password === loginUser.password
-      ) {
-        this.setState({
-          isAuthorized: true
-        });
-      } else {
+
+    axios
+      .get("https://idiomabackend.herokuapp.com/user/1")
+      .then(result => {
+        if (
+          result.data.email === this.state.email &&
+          result.data.password === this.state.password
+        ) {
+          this.setState({
+            isAuthorized: true
+          });
+        } else {
+          window.scrollTo(0, 0);
+          document.getElementById("markAlert").innerHTML =
+            '<div class="alert alert-danger" role="alert"><strong>Falha ao logar! </strong>E-mail ou senha inválidos.</div>';
+          setTimeout(() => {
+            document.getElementById("markAlert").innerHTML = "";
+          }, 4000);
+        }
+      })
+      .catch(result => {
+        //pegue os erros com o catch
         window.scrollTo(0, 0);
         document.getElementById("markAlert").innerHTML =
           '<div class="alert alert-danger" role="alert"><strong>Falha ao logar! </strong>E-mail ou senha inválidos.</div>';
         setTimeout(() => {
           document.getElementById("markAlert").innerHTML = "";
         }, 4000);
-      }
-    });
+      });
   };
 
   actionRegister = event => {
@@ -94,18 +116,14 @@ class Login extends Component {
     return (
       <div className="col-md-6 login-form-1">
         <h3>Login</h3>
-        <form
-          onSubmit={event => {
-            this.actionLogin(event);
-          }}
-        >
+        <form onSubmit={this.actionLogin}>
           <div className="form-group">
             <label>E-mail</label>
             <input
               type="email"
               className="form-control"
-              id="emailLogin"
-              ref="emailLogin"
+              name="email"
+              onChange={this.handleInputChange}
               required
             />
           </div>
@@ -114,18 +132,13 @@ class Login extends Component {
             <input
               type="password"
               className="form-control"
-              id="passwordLogin"
-              ref="passwordLogin"
+              email="password"
+              onChange={this.handleInputChange}
               required
             />
           </div>
           <div className="form-group">
-            <button
-              type="submit"
-              className="btnSubmit"
-              id="btnLogin"
-              ref="btnLogin"
-            >
+            <button type="submit" className="btnSubmit">
               Salvar
             </button>
           </div>
