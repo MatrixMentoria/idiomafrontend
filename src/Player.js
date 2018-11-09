@@ -89,16 +89,16 @@ class App extends Component {
     });
 
     //manipulação do player usando o teclado
-    document.onkeydown = function(event) {
+    document.onkeydown = event => {
       var keycode = event.keyCode ? event.keyCode : event.which;
       var audio = document.getElementsByTagName("audio");
       // ctrl + espaço
       if (keycode === 32) {
         if (audio[0].paused) {
-          window.scrollTop;
+          void window.scrollTop;
           audio[0].play();
         } else {
-          window.scrollTop;
+          void window.scrollTop;
           audio[0].pause();
         }
         console.log(audio);
@@ -402,7 +402,7 @@ class App extends Component {
           open={this.state.show}
           onClose={() => this.setState({ show: !this.state.show })}
         >
-          <img src={img4} />
+          <img src={img4} alt=""/>
         </Modal>
       </div>
     );
