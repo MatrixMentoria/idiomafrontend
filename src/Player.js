@@ -4,6 +4,7 @@ import { Glyphicon } from "react-bootstrap";
 import "./css/App.css";
 import "./css/styles.css";
 import axios from "axios";
+import API from "./api";
 import img1 from "./medias/bandeiradobrasil.png";
 import img2 from "./medias/bandeiradoseua.png";
 import img3 from "./medias/hideicon.png";
@@ -51,7 +52,7 @@ class App extends Component {
   };
 
   componentDidMount = () => {
-    axios.get("audio/" + this.props.match.params.id).then(result => {
+    API.getAudio(this.props.match.params.id).then(result => {
       const audioId = result.data.id;
       const link = result.data.link;
       const subtitleEN = result.data.englishSubtitle;
@@ -128,7 +129,7 @@ class App extends Component {
   };
 
   popularListaMarcadores = () => {
-    axios.get(`marking?audioId=${this.props.match.params.id}`).then(result => {
+    API.getMarkers(this.props.match.params.id).then(result => {
       //if abaixo temporário até update no código backend
       if (result.data === "") {
         this.setState({
@@ -143,6 +144,7 @@ class App extends Component {
   };
 
   adicionarMarcador = novoMarcador => {
+    //TODO: Migrar para API.js
     axios
       .post("marking/", novoMarcador)
       .then(() => {
@@ -165,6 +167,7 @@ class App extends Component {
   };
 
   excluirMarcarao = id => {
+    //TODO: Migrar para API.js
     axios
       .delete("marking/" + id)
       .then(() => {
