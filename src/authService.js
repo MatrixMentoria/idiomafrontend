@@ -2,6 +2,13 @@ import axios from "axios";
 
 const urls = { token: "oauth/token", register: "user/signup" };
 
+const AUTH_KEY = "TOKENAUTH";
+const auth_token = window.localStorage.getItem(AUTH_KEY);
+
+if (auth_token !== null) {
+  axios.defaults.headers.common["Authorization"] = `Bearer ${auth_token}`;
+}
+
 const authenticate = (username, password) => {
   var config = {
     headers: {
@@ -21,6 +28,7 @@ const authenticate = (username, password) => {
       axios.defaults.headers.common["Authorization"] = `Bearer ${
         res.data.access_token
       }`;
+      window.localStorage.setItem(AUTH_KEY, res.data.access_token);
       return true;
     })
     .catch(() => {
