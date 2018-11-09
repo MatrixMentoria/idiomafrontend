@@ -10,7 +10,8 @@ class Login extends Component {
     firstName: "",
     lastName: "",
     email: "",
-    password: ""
+    password: "",
+    confirmPassword: ""
   };
 
   handleInputChange = event => {
@@ -26,7 +27,6 @@ class Login extends Component {
   actionLogin = event => {
     event.preventDefault();
     event.stopPropagation();
-
     authService
       .authenticate(this.state.email, this.state.password)
       .then(result => {
@@ -34,66 +34,50 @@ class Login extends Component {
           isAuthorized: result
         });
       })
-      .catch(error => {
-        console.log(error.response.data);
+      .catch(() => {
+        window.scrollTo(0, 0);
+           document.getElementById("markAlert").innerHTML =
+             '<div class="alert alert-danger" role="alert"><strong>Falha ao logar! </strong>E-mail ou senha inválidos.</div>';
+        setTimeout(() => {
+            document.getElementById("markAlert").innerHTML = "";
+         }, 4000);
+      })
+      .then( () => {
+        console.log(this.state.isAuthorized)
       });
-
-    // axios
-    //   .get("https://idiomabackend.herokuapp.com/user/1")
-    //   .then(result => {
-    //     if (
-    //       result.data.email === this.state.email &&
-    //       result.data.password === this.state.password
-    //     ) {
-    //       this.setState({
-    //         isAuthorized: true
-    //       });
-    //     } else {
-    //       window.scrollTo(0, 0);
-    //       document.getElementById("markAlert").innerHTML =
-    //         '<div class="alert alert-danger" role="alert"><strong>Falha ao logar! </strong>E-mail ou senha inválidos.</div>';
-    //       setTimeout(() => {
-    //         document.getElementById("markAlert").innerHTML = "";
-    //       }, 4000);
-    //     }
-    //   })
-    //   .catch(result => {
-    //     //pegue os erros com o catch
-    //     window.scrollTo(0, 0);
-    //     document.getElementById("markAlert").innerHTML =
-    //       '<div class="alert alert-danger" role="alert"><strong>Falha ao logar! </strong>E-mail ou senha inválidos.</div>';
-    //     setTimeout(() => {
-    //       document.getElementById("markAlert").innerHTML = "";
-    //     }, 4000);
-    //   });
   };
 
   actionRegister = event => {
     event.preventDefault();
     event.stopPropagation();
-    if (
-      this.refs.passwordRegister.value ===
-      this.refs.confirmPasswordRegister.value
-    ) {
-      const newUser = {
-        email: this.refs.emailRegister.value,
-        password: this.refs.passwordRegister.value,
-        personData: {
-          firstName: this.refs.firstnameRegister.value,
-          lastName: this.refs.lastnameRegister.value
-        }
-      };
-      //Conexão com o banco para cadastrar usuário a fazer
-      window.scrollTo(0, 0);
-      document.getElementById("markAlert").innerHTML =
-        '<div class="alert alert-success" role="alert"><strong>Sucesso! </strong>Usuário ' +
-        newUser.personData.firstName +
-        " " +
-        newUser.personData.lastName +
-        " cadastrado!</div>";
-      setTimeout(() => {
-        document.getElementById("markAlert").innerHTML = "";
-      }, 4000);
+    if (this.state.password === this.state.confirmPassword) {
+      authService
+        .register(
+          this.state.email,
+          this.state.password,
+          this.state.firstName,
+          this.state.lastName
+        )
+        .then( success => {
+          window.scrollTo(0, 0);
+          document.getElementById("markAlert").innerHTML =
+            '<div class="alert alert-success" role="alert"><strong>Sucesso! </strong>Usuário ' +
+            this.state.firstName +
+            " " +
+            this.state.lastName +
+            " cadastrado!</div>";
+          setTimeout(() => {
+            document.getElementById("markAlert").innerHTML = "";
+          }, 4000);
+        })
+        .catch(error => {
+          window.scrollTo(0, 0);
+          document.getElementById("markAlert").innerHTML =
+            '<div class="alert alert-danger" role="alert"><strong>Falha ao cadastrar! </strong>'+error+'</div>';
+          setTimeout(() => {
+            document.getElementById("markAlert").innerHTML = "";
+          }, 4000);
+        });
     } else {
       window.scrollTo(0, 0);
       document.getElementById("markAlert").innerHTML =
@@ -135,7 +119,6 @@ class Login extends Component {
               className="form-control"
               name="email"
               onChange={this.handleInputChange}
-              value={this.state.email}
               required
             />
           </div>
@@ -174,8 +157,8 @@ class Login extends Component {
             <input
               type="text"
               className="form-control"
-              id="firstnameRegister"
-              ref="firstnameRegister"
+              name="firstName"
+              onChange={this.handleInputChange}
               required
             />
           </div>
@@ -184,8 +167,8 @@ class Login extends Component {
             <input
               type="text"
               className="form-control"
-              id="lastnameRegister"
-              ref="lastnameRegister"
+              name="lastName"
+              onChange={this.handleInputChange}
               required
             />
           </div>
@@ -194,8 +177,8 @@ class Login extends Component {
             <input
               type="email"
               className="form-control"
-              id="emailRegister"
-              ref="emailRegister"
+              name="email"
+              onChange={this.handleInputChange}
               required
             />
           </div>
@@ -204,8 +187,8 @@ class Login extends Component {
             <input
               type="password"
               className="form-control"
-              id="passwordRegister"
-              ref="passwordRegister"
+              name="password"
+              onChange={this.handleInputChange}
               required
             />
           </div>
@@ -214,19 +197,14 @@ class Login extends Component {
             <input
               type="password"
               className="form-control"
-              id="confirmPasswordRegister"
-              ref="confirmPasswordRegister"
+              name="confirmPassword"
+              onChange={this.handleInputChange}
               required
             />
           </div>
           <div className="form-group">
             <div className="form-group">
-              <button
-                type="submit"
-                className="btnSubmit"
-                id="btnRegister"
-                ref="btnRegister"
-              >
+              <button type="submit" className="btnSubmit">
                 Salvar
               </button>
             </div>

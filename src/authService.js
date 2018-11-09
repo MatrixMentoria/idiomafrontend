@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const urls = { token: "oauth/token" };
+const urls = { token: "oauth/token", register: "user/signup" };
 
 const authenticate = (username, password) => {
   var config = {
@@ -23,12 +23,35 @@ const authenticate = (username, password) => {
       }`;
       return true;
     })
-    .catch(error => {
-      console.log(error.response.data);
-      return false;
+    .catch(() => {
+      throw false;
     });
 };
 
+const register = (email, password, firstName, lastName) => {
+
+  var config = {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "Basic ZnJvbnRlbmRjbGllbnQ6YXBwZnJvbnRlbmRjbGllbnQyMDE4"
+    }
+  };
+
+  const newUser = {
+    email: email,
+    password: password,
+    personData: {
+      firstName: firstName,
+      lastName: lastName
+    }
+  }
+  return axios
+  .post(urls.register, newUser,config)
+  .catch(error => {
+    throw error.response.data.detail;
+  })
+}
+
 export default {
-  authenticate
+  authenticate, register
 };
