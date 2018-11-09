@@ -51,16 +51,16 @@ class App extends Component {
   };
 
   componentDidMount = () => {
-    axios.get("audio/").then(result => {
-      const audioId = result.data[0].id;
-      const link = result.data[0].link;
-      const subtitleEN = result.data[0].englishSubtitle;
-      const subtitlePT = result.data[0].portugueseSubtitle;
-      const total = result.data[0].duration;
-      const titleEN = result.data[0].englishTitle;
-      const transcriptionEN = result.data[0].englishTranscription;
-      const titlePT = result.data[0].portugueseTitle;
-      const transcriptionPT = result.data[0].portugueseTranscription;
+    axios.get("audio/" + this.props.match.params.id).then(result => {
+      const audioId = result.data.id;
+      const link = result.data.link;
+      const subtitleEN = result.data.englishSubtitle;
+      const subtitlePT = result.data.portugueseSubtitle;
+      const total = result.data.duration;
+      const titleEN = result.data.englishTitle;
+      const transcriptionEN = result.data.englishTranscription;
+      const titlePT = result.data.portugueseTitle;
+      const transcriptionPT = result.data.portugueseTranscription;
 
       this.setState({
         speed: "1.0x",
@@ -79,13 +79,6 @@ class App extends Component {
 
       this.converterSegundos(total);
       this.popularListaMarcadores();
-    });
-
-    axios.get("user/1").then(result => {
-      const userId = result.data.id;
-      this.setState({
-        userId: userId
-      });
     });
 
     //manipulação do player usando o teclado
@@ -135,7 +128,7 @@ class App extends Component {
   };
 
   popularListaMarcadores = () => {
-    axios.get(`marking?userId=1&audioId=1`).then(result => {
+    axios.get(`marking?audioId=${this.props.match.params.id}`).then(result => {
       //if abaixo temporário até update no código backend
       if (result.data === "") {
         this.setState({
@@ -402,7 +395,7 @@ class App extends Component {
           open={this.state.show}
           onClose={() => this.setState({ show: !this.state.show })}
         >
-          <img src={img4} alt=""/>
+          <img src={img4} alt="" />
         </Modal>
       </div>
     );

@@ -9,8 +9,8 @@ class Login extends Component {
     isAuthorized: false,
     firstName: "",
     lastName: "",
-    email: "",
-    password: "",
+    email: "aaa@aaa.com",
+    password: "123456",
     confirmPassword: ""
   };
 
@@ -35,12 +35,12 @@ class Login extends Component {
         });
       })
       .catch(() => {
-        window.scrollTo(0, 0);
-        document.getElementById("markAlert").innerHTML =
-          '<div class="alert alert-danger" role="alert"><strong>Falha ao logar! </strong>E-mail ou senha inválidos.</div>';
-        setTimeout(() => {
-          document.getElementById("markAlert").innerHTML = "";
-        }, 4000);
+        // window.scrollTo(0, 0);
+        // document.getElementById("markAlert").innerHTML =
+        //   '<div class="alert alert-danger" role="alert"><strong>Falha ao logar! </strong>E-mail ou senha inválidos.</div>';
+        // setTimeout(() => {
+        //   document.getElementById("markAlert").innerHTML = "";
+        // }, 4000);
       })
       .then(() => {
         console.log(this.state.isAuthorized);
@@ -95,7 +95,7 @@ class Login extends Component {
 
   checkRedirect = () => {
     if (this.state.isAuthorized) {
-      return <Redirect to="/Player" />;
+      return <Redirect to="/Audios" />;
     }
   };
 
@@ -123,6 +123,7 @@ class Login extends Component {
               type="email"
               className="form-control"
               name="email"
+              value={this.state.email}
               onChange={this.handleInputChange}
               required
             />
@@ -134,6 +135,7 @@ class Login extends Component {
               className="form-control"
               email="password"
               name="password"
+              value={this.state.password}
               onChange={this.handleInputChange}
               required
             />
