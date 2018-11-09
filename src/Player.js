@@ -143,16 +143,15 @@ class App extends Component {
   };
 
   excluirMarcarao = id => {
-    API.deleteMarker(id)
-      .then(() => {
-        document.getElementById("markAlert").innerHTML =
-          '<div class="alert alert-info" role="alert"><strong>Sucesso!</strong> Marcador excluído.</div>';
-        window.scrollTo(0, 0);
-        document.getElementById(id.toString()).remove();
-        setTimeout(() => {
-          document.getElementById("markAlert").innerHTML = "";
-        }, 3000);
-      })
+    API.deleteMarker(id).then(() => {
+      document.getElementById("markAlert").innerHTML =
+        '<div class="alert alert-info" role="alert"><strong>Sucesso!</strong> Marcador excluído.</div>';
+      window.scrollTo(0, 0);
+      document.getElementById(id.toString()).remove();
+      setTimeout(() => {
+        document.getElementById("markAlert").innerHTML = "";
+      }, 3000);
+    });
   };
 
   criarMarcador = () => {
@@ -285,6 +284,7 @@ class App extends Component {
             playing={false}
             muted={false}
             width={1140}
+            height={100}
             controls
             config={{ file: { attributes: { controlsList: "nodownload" } } }}
           />
