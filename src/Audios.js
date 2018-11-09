@@ -20,7 +20,6 @@ class Audios extends Component {
           {this.state.audios.map(item => {
             return (
               <li key={item.id}>
-                {item.id}
                 <Link to={`Player/${item.id}`}>{item.englishTitle}</Link>
               </li>
             );

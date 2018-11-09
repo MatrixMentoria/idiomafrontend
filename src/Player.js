@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import ReactPlayer from "react-player";
 import { Glyphicon } from "react-bootstrap";
+import { Link } from "react-router-dom";
 import "./css/App.css";
 import "./css/styles.css";
 import axios from "axios";
@@ -477,7 +478,7 @@ class App extends Component {
       <div className="row wrapper-row">
         <div className="col-12 col-md-1">
           <button type="button" className="btn btn-light btn-text">
-            Voltar aos áudios
+            <Link to="/Audios">Voltar aos áudios</Link>
           </button>
         </div>
       </div>
