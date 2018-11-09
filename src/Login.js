@@ -36,14 +36,14 @@ class Login extends Component {
       })
       .catch(() => {
         window.scrollTo(0, 0);
-           document.getElementById("markAlert").innerHTML =
-             '<div class="alert alert-danger" role="alert"><strong>Falha ao logar! </strong>E-mail ou senha inválidos.</div>';
+        document.getElementById("markAlert").innerHTML =
+          '<div class="alert alert-danger" role="alert"><strong>Falha ao logar! </strong>E-mail ou senha inválidos.</div>';
         setTimeout(() => {
-            document.getElementById("markAlert").innerHTML = "";
-         }, 4000);
+          document.getElementById("markAlert").innerHTML = "";
+        }, 4000);
       })
-      .then( () => {
-        console.log(this.state.isAuthorized)
+      .then(() => {
+        console.log(this.state.isAuthorized);
       });
   };
 
@@ -58,7 +58,10 @@ class Login extends Component {
           this.state.firstName,
           this.state.lastName
         )
-        .then( success => {
+        .then(result => {
+          this.setState({
+            isAuthorized: result
+          });
           window.scrollTo(0, 0);
           document.getElementById("markAlert").innerHTML =
             '<div class="alert alert-success" role="alert"><strong>Sucesso! </strong>Usuário ' +
@@ -73,7 +76,9 @@ class Login extends Component {
         .catch(error => {
           window.scrollTo(0, 0);
           document.getElementById("markAlert").innerHTML =
-            '<div class="alert alert-danger" role="alert"><strong>Falha ao cadastrar! </strong>'+error+'</div>';
+            '<div class="alert alert-danger" role="alert"><strong>Falha ao cadastrar! </strong>' +
+            error +
+            "</div>";
           setTimeout(() => {
             document.getElementById("markAlert").innerHTML = "";
           }, 4000);

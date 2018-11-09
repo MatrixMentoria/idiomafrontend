@@ -30,11 +30,10 @@ const authenticate = (username, password) => {
 };
 
 const register = (email, password, firstName, lastName) => {
-
   var config = {
     headers: {
-      "Content-Type": "application/json",
-      Authorization: "Basic ZnJvbnRlbmRjbGllbnQ6YXBwZnJvbnRlbmRjbGllbnQyMDE4"
+      "Content-Type": "application/json"
+      //Authorization: "Basic ZnJvbnRlbmRjbGllbnQ6YXBwZnJvbnRlbmRjbGllbnQyMDE4"
     }
   };
 
@@ -45,14 +44,18 @@ const register = (email, password, firstName, lastName) => {
       firstName: firstName,
       lastName: lastName
     }
-  }
+  };
   return axios
-  .post(urls.register, newUser,config)
-  .catch(error => {
-    throw error.response.data.detail;
-  })
-}
+    .post(urls.register, newUser, config)
+    .then(response => {
+      return authenticate(email, password);
+    })
+    .catch(error => {
+      throw error.response.data.detail;
+    });
+};
 
 export default {
-  authenticate, register
+  authenticate,
+  register
 };
