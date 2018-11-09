@@ -78,8 +78,6 @@ class App extends Component {
         titlePT: titlePT,
         transcriptionPT: transcriptionPT
       });
-
-      this.converterSegundos(total);
       this.popularListaMarcadores();
     });
 
@@ -144,61 +142,35 @@ class App extends Component {
     });
   };
 
-  adicionarMarcador = novoMarcador => {
-    //TODO: Migrar para API.js
-    axios
-      .post("marking/", novoMarcador)
-      .then(() => {
-        document.getElementById("markAlert").innerHTML =
-          '<div class="alert alert-success" role="alert"><strong>Sucesso!</strong> Novo marcador criado.</div>';
-      })
-      .catch(() => {
-        document.getElementById("markAlert").innerHTML =
-          '<div class="alert alert-danger" role="alert"><strong>Erro!</strong> Falha ao criar novo marcador.</div>';
-      })
-      .then(() => {
-        window.scrollTo(0, 0);
-        setTimeout(() => {
-          document.getElementById("markAlert").innerHTML = "";
-        }, 3000);
-        setTimeout(() => {
-          window.location.reload(true);
-        }, 3000);
-      });
-  };
-
   excluirMarcarao = id => {
-    //TODO: Migrar para API.js
-    axios
-      .delete("marking/" + id)
+    API.deleteMarker(id)
       .then(() => {
         document.getElementById("markAlert").innerHTML =
           '<div class="alert alert-info" role="alert"><strong>Sucesso!</strong> Marcador excluído.</div>';
-      })
-      .catch(() => {
-        document.getElementById("markAlert").innerHTML =
-          '<div class="alert alert-warning" role="alert"><strong>Erro!</strong> Falha ao excluir marcador.</div>';
-      })
-      .then(() => {
         window.scrollTo(0, 0);
         document.getElementById(id.toString()).remove();
         setTimeout(() => {
           document.getElementById("markAlert").innerHTML = "";
         }, 3000);
-      });
+      })
   };
 
-  gerarMarcacao = () => {
+  criarMarcador = () => {
     if (this.state.audio[0].currentTime < 1) var minimumTime = 0;
     else minimumTime = this.state.audio[0].currentTime - 1;
-
     const newMarking = {
       audioId: this.state.audioId,
-      userId: this.state.userId,
       begin: minimumTime,
       end: this.state.audio[0].currentTime + 3
     };
-    this.adicionarMarcador(newMarking);
+    API.addMarker(newMarking).then(() => {
+      document.getElementById("markAlert").innerHTML =
+        '<div class="alert alert-success" role="alert"><strong>Sucesso!</strong> Novo marcador criado.</div>';
+      window.scrollTo(0, 0);
+      setTimeout(() => {
+        document.getElementById("markAlert").innerHTML = "";
+      }, 3000);
+    });
   };
 
   tocarMarcacao = markingBegin => {
@@ -207,20 +179,6 @@ class App extends Component {
     setTimeout(() => {
       this.state.audio[0].pause();
     }, 5000);
-  };
-
-  converterSegundos = duration => {
-    const hour = Math.trunc(duration / 3600);
-    const min = Math.trunc(duration / 60);
-    const seg = duration % 60;
-
-    this.setState({
-      duration: {
-        hour: hour,
-        min: min,
-        seg: seg
-      }
-    });
   };
 
   alterarVelocidadeAudio = info => {
@@ -342,7 +300,7 @@ class App extends Component {
           <Glyphicon
             glyph="glyphicon glyphicon-bookmark icon-highlighter"
             id="icon-marcador"
-            onClick={this.gerarMarcacao}
+            onClick={this.criarMarcador}
           />
 
           <p data-tip=" Retroceder 3 seg ">

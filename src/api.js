@@ -25,9 +25,25 @@ const getMarkers = audioId => {
   });
 };
 
+const addMarker = newMarker => {
+  return axios.post(urls.markers, newMarker).catch(error => {
+    if (error.response.status === 401) document.location.replace("/Login");
+    return error.response;
+  });
+};
+
+const deleteMarker = id => {
+  return axios.delete(urls.markers + id).catch(error => {
+    if (error.response.status === 401) document.location.replace("/Login");
+    return error.response;
+  });
+};
+
 export default {
   getAudios,
   getAudio,
-  getMarkers
+  getMarkers,
+  addMarker,
+  deleteMarker
   //TODO: façam nesse modelo a criação de markers
 };
