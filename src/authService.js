@@ -24,7 +24,8 @@ const authenticate = (username, password) => {
       return true;
     })
     .catch(() => {
-      throw false;
+      let err = new Error(false);
+      throw err;
     });
 };
 
