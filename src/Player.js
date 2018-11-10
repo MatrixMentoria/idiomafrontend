@@ -4,7 +4,6 @@ import { Glyphicon } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import "./css/App.css";
 import "./css/styles.css";
-import axios from "axios";
 import API from "./api";
 import img1 from "./medias/bandeiradobrasil.png";
 import img2 from "./medias/bandeiradoseua.png";
@@ -13,8 +12,8 @@ import img4 from "./medias/Legendas.png";
 import img5 from "./medias/teclado.png";
 import ReactTooltip from "react-tooltip";
 import Modal from "react-responsive-modal";
-
 import Collapse from "react-css-collapse";
+import swal from "sweetalert";
 
 class App extends Component {
   state = {
@@ -148,14 +147,11 @@ class App extends Component {
 
   excluirMarcarao = id => {
     API.deleteMarker(id).then(() => {
-      document.getElementById("markAlert").innerHTML =
-        '<div class="alert alert-info" role="alert"><strong>Sucesso!</strong> Marcador excluído.</div>';
-      window.scrollTo(0, 0);
-      document.getElementById(id.toString()).remove();
-      setTimeout(() => {
-        document.getElementById("markAlert").innerHTML = "";
-      }, 3000);
-    });
+      swal("Sucesso!", "Marcador excluído.", "success",{
+        timer: 2500,
+      });
+      this.popularListaMarcadores();
+    })
   };
 
   criarMarcador = () => {
@@ -167,12 +163,9 @@ class App extends Component {
       end: this.state.audio[0].currentTime + 3
     };
     API.addMarker(newMarking).then(() => {
-      document.getElementById("markAlert").innerHTML =
-        '<div class="alert alert-success" role="alert"><strong>Sucesso!</strong> Novo marcador criado.</div>';
-      window.scrollTo(0, 0);
-      setTimeout(() => {
-        document.getElementById("markAlert").innerHTML = "";
-      }, 3000);
+      swal("Sucesso!", "Marcador adicionado.", "success",{
+        timer: 2500,
+      });
       this.popularListaMarcadores();
     });
   };

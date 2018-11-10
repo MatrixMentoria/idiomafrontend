@@ -3,6 +3,7 @@ import { Redirect } from "react-router-dom";
 import "./css/App.css";
 import "./css/styles.css";
 import authService from "./authService";
+import swal from "sweetalert";
 
 class Login extends Component {
   state = {
@@ -35,12 +36,9 @@ class Login extends Component {
         });
       })
       .catch(() => {
-        // window.scrollTo(0, 0);
-        // document.getElementById("markAlert").innerHTML =
-        //   '<div class="alert alert-danger" role="alert"><strong>Falha ao logar! </strong>E-mail ou senha inválidos.</div>';
-        // setTimeout(() => {
-        //   document.getElementById("markAlert").innerHTML = "";
-        // }, 4000);
+        swal("Falha ao logar!", "E-mail ou senha inválidos.", "error", {
+          timer: 2500
+        });
       })
       .then(() => {
         console.log(this.state.isAuthorized);
@@ -62,34 +60,27 @@ class Login extends Component {
           this.setState({
             isAuthorized: result
           });
-          window.scrollTo(0, 0);
-          document.getElementById("markAlert").innerHTML =
-            '<div class="alert alert-success" role="alert"><strong>Sucesso! </strong>Usuário ' +
-            this.state.firstName +
-            " " +
-            this.state.lastName +
-            " cadastrado!</div>";
-          setTimeout(() => {
-            document.getElementById("markAlert").innerHTML = "";
-          }, 4000);
+          swal(
+            "Sucesso!",
+            "Usuário " +
+              this.state.firstName +
+              " " +
+              this.state.lastName +
+              " cadastrado!",
+            "success",{
+              timer: 2500
+            }
+          );
         })
         .catch(error => {
-          window.scrollTo(0, 0);
-          document.getElementById("markAlert").innerHTML =
-            '<div class="alert alert-danger" role="alert"><strong>Falha ao cadastrar! </strong>' +
-            error +
-            "</div>";
-          setTimeout(() => {
-            document.getElementById("markAlert").innerHTML = "";
-          }, 4000);
+          swal("Falha ao cadastrar!", "" + error + "", "error", {
+            timer: 2500
+          });
         });
     } else {
-      window.scrollTo(0, 0);
-      document.getElementById("markAlert").innerHTML =
-        '<div class="alert alert-danger" role="alert"><strong>Falha ao cadastrar! </strong>Senhas não estão iguais!</div>';
-      setTimeout(() => {
-        document.getElementById("markAlert").innerHTML = "";
-      }, 4000);
+      swal("Falha ao cadastrar!", "As senhas não são iguais.", "warning", {
+        timer: 2500
+      });
     }
   };
 
@@ -123,7 +114,6 @@ class Login extends Component {
               type="email"
               className="form-control"
               name="email"
-              value={this.state.email}
               onChange={this.handleInputChange}
               required
             />
@@ -135,7 +125,6 @@ class Login extends Component {
               className="form-control"
               email="password"
               name="password"
-              value={this.state.password}
               onChange={this.handleInputChange}
               required
             />

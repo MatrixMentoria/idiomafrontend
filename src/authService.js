@@ -40,8 +40,8 @@ const authenticate = (username, password) => {
 const register = (email, password, firstName, lastName) => {
   var config = {
     headers: {
-      "Content-Type": "application/json"
-      //Authorization: "Basic ZnJvbnRlbmRjbGllbnQ6YXBwZnJvbnRlbmRjbGllbnQyMDE4"
+      "Content-Type": "application/json",
+      Authorization: "Basic ZnJvbnRlbmRjbGllbnQ6YXBwZnJvbnRlbmRjbGllbnQyMDE4"
     }
   };
 
