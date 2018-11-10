@@ -49,7 +49,11 @@ class App extends Component {
     isOpen: false,
 
     //modal
-    show: false
+    show: false,
+
+    //Disabled dos botões
+    bMais: false,
+    bMenos: false
   };
 
   componentDidMount = () => {
@@ -187,12 +191,12 @@ class App extends Component {
       : (this.state.audio[0].playbackRate -= 0.1);
 
     this.state.audio[0].playbackRate > 2
-      ? (this.refs.bMais.disabled = true)
-      : (this.refs.bMais.disabled = false);
+      ? this.setState({ bMais: true })
+      : this.setState({ bMais: false });
 
     this.state.audio[0].playbackRate < 0.51
-      ? (this.refs.bMenos.disabled = true)
-      : (this.refs.bMenos.disabled = false);
+      ? this.setState({ bMenos: true })
+      : this.setState({ bMenos: false });
 
     const speed = this.state.audio[0].playbackRate.toFixed(1).toString();
 
@@ -210,30 +214,45 @@ class App extends Component {
   };
 
   exibirOcultarTxtPT = () => {
-    if (this.refs.txtPT.textContent !== "") {
-      this.refs.titlePT.textContent = "";
-      this.refs.txtPT.textContent = "";
+    var title = document.getElementById("titlePT"),
+      transcription = document.getElementById("txtPT");
+    if (title.textContent !== "") {
+      title.textContent = "";
+      transcription.textContent = "";
     } else {
-      this.refs.titlePT.textContent = this.state.titlePT;
-      this.refs.txtPT.textContent = this.state.transcriptionPT;
+      title.textContent = this.state.titlePT;
+      transcription.textContent = this.state.transcriptionPT;
     }
   };
 
   exibirOcultarTxtEN = () => {
-    if (this.refs.txtEN.textContent !== "") {
-      this.refs.titleEN.textContent = "";
-      this.refs.txtEN.textContent = "";
+    var title = document.getElementById("titleEN"),
+      transcription = document.getElementById("txtEN");
+    if (title.textContent !== "") {
+      title.textContent = "";
+      transcription.textContent = "";
     } else {
-      this.refs.titleEN.textContent = this.state.titleEN;
-      this.refs.txtEN.textContent = this.state.transcriptionEN;
+      title.textContent = this.state.titleEN;
+      transcription.textContent = this.state.transcriptionEN;
     }
   };
 
   ocultarTodos = () => {
-    this.refs.titlePT.textContent = "";
-    this.refs.txtPT.textContent = "";
-    this.refs.titleEN.textContent = "";
-    this.refs.txtEN.textContent = "";
+    var titlePT = document.getElementById("titlePT"),
+      transcriptionPT = document.getElementById("txtPT"),
+      titleEN = document.getElementById("titleEN"),
+      transcriptionEN = document.getElementById("txtEN");
+    if (titlePT.textContent !== "" && titleEN.textContent) {
+      titlePT.textContent = "";
+      transcriptionPT.textContent = "";
+      titleEN.textContent = "";
+      transcriptionEN.textContent = "";
+    } else {
+      titlePT.textContent = this.state.titlePT;
+      transcriptionPT.textContent = this.state.transcriptionPT;
+      titleEN.textContent = this.state.titleEN;
+      transcriptionEN.textContent = this.state.transcriptionEN;
+    }
   };
 
   render = () => {
@@ -324,10 +343,10 @@ class App extends Component {
           type="button"
           className="btn btn-light btn-text"
           id="menos"
+          disabled={this.state.bMenos}
           onClick={() => {
             this.alterarVelocidadeAudio(false);
           }}
-          ref="bMenos"
         >
           {" "}
           -{" "}
@@ -339,10 +358,10 @@ class App extends Component {
           type="button"
           className="btn btn-light btn-text"
           id="mais"
+          disabled={this.state.bMais}
           onClick={() => {
             this.alterarVelocidadeAudio(true);
           }}
-          ref="bMais"
         >
           {" "}
           +{" "}
@@ -369,10 +388,10 @@ class App extends Component {
       <div className="col-12 col-md-5 col-lg-5 col-xl-5 card card-portuguese ">
         <div className="card-body">
           <h6 className="card-subtitle mb-2 text-muted">Texto em Português</h6>
-          <h5 className="card-title" ref="titlePT">
+          <h5 className="card-title" id="titlePT">
             {this.state.titlePT}
           </h5>
-          <p className="card-text" ref="txtPT">
+          <p className="card-text" id="txtPT">
             {this.state.transcriptionPT}
           </p>
         </div>
@@ -421,10 +440,10 @@ class App extends Component {
       <div className=" col-12 col-md-5 col-lg-5  col-xl-5 card card-english">
         <div className="card-body">
           <h6 className="card-subtitle mb-2 text-muted">Texto em Inglês</h6>
-          <h5 className="card-title" ref="titleEN">
+          <h5 className="card-title" id="titleEN">
             {this.state.titleEN}
           </h5>
-          <p className="card-text" ref="txtEN">
+          <p className="card-text" id="txtEN">
             {this.state.transcriptionEN}
           </p>
         </div>
