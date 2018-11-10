@@ -15,7 +15,6 @@ class Audios extends Component {
   render() {
     return (
       <div className="container">
-        <h3>Olá, usuário!</h3>
         <div style={{ overflow: "auto", height: 200 }} id="listaMarcadores">
           <h5
             className="navbar  justify-content-center"

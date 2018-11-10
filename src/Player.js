@@ -81,7 +81,7 @@ class App extends Component {
         titlePT: titlePT,
         transcriptionPT: transcriptionPT
       });
-      this.popularListaMarcadores();
+      this.fillListMarkers();
     });
 
     //manipulação do player usando o teclado
@@ -111,7 +111,7 @@ class App extends Component {
     };
   };
 
-  popularListaMarcadores = () => {
+  fillListMarkers = () => {
     API.getMarkers(this.props.match.params.id).then(result => {
       //if abaixo temporário até update no código backend
       if (result.data === "") {
@@ -126,16 +126,16 @@ class App extends Component {
     });
   };
 
-  excluirMarcarao = id => {
+  destroyMarker = id => {
     API.deleteMarker(id).then(() => {
       swal("Sucesso!", "Marcador excluído.", "success", {
         timer: 2500
       });
-      this.popularListaMarcadores();
+      this.fillListMarkers();
     });
   };
 
-  criarMarcador = () => {
+  createMarker = () => {
     if (this.state.audio[0].currentTime < 1) var minimumTime = 0;
     else minimumTime = this.state.audio[0].currentTime - 1;
     const newMarking = {
@@ -147,11 +147,11 @@ class App extends Component {
       swal("Sucesso!", "Marcador adicionado.", "success", {
         timer: 2500
       });
-      this.popularListaMarcadores();
+      this.fillListMarkers();
     });
   };
 
-  tocarMarcacao = markingBegin => {
+  playMarker = markingBegin => {
     this.state.audio[0].currentTime = markingBegin;
     this.state.audio[0].play();
     setTimeout(() => {
@@ -159,7 +159,7 @@ class App extends Component {
     }, 5000);
   };
 
-  alterarVelocidadeAudio = info => {
+  changeAudioSpeed = info => {
     info === true
       ? (this.state.audio[0].playbackRate += 0.1)
       : (this.state.audio[0].playbackRate -= 0.1);
@@ -179,15 +179,15 @@ class App extends Component {
     });
   };
 
-  avancarTresSegundos = () => {
+  forward3Seconds = () => {
     this.state.audio[0].currentTime += 3;
   };
 
-  voltarTresSegundos = () => {
+  back3Seconds = () => {
     this.state.audio[0].currentTime -= 3;
   };
 
-  exibirOcultarTxtPT = () => {
+  showHideTxtPT = () => {
     var title = document.getElementById("titlePT"),
       transcription = document.getElementById("txtPT");
     if (title.textContent !== "") {
@@ -199,7 +199,7 @@ class App extends Component {
     }
   };
 
-  exibirOcultarTxtEN = () => {
+  showHideTxtEN = () => {
     var title = document.getElementById("titleEN"),
       transcription = document.getElementById("txtEN");
     if (title.textContent !== "") {
@@ -211,7 +211,7 @@ class App extends Component {
     }
   };
 
-  ocultarTodos = () => {
+  hideAll = () => {
     var titlePT = document.getElementById("titlePT"),
       transcriptionPT = document.getElementById("txtPT"),
       titleEN = document.getElementById("titleEN"),
@@ -233,22 +233,22 @@ class App extends Component {
     return (
       <div>
         <div className="container" id="corpo">
-          {this.ControlesPagina()}
+          {this.pageControls()}
           <div id="markAlert" />
           {this.Player()}
-          {this.ControlesPlayer()}
-          {this.MarkLista()}
+          {this.controlsPlayer()}
+          {this.listMarker()}
           <div className="row">
-            {this.CardUm()}
-            {this.Imagens_PT_EN_Null()}
-            {this.CardDois()}
+            {this.cardOne()}
+            {this.Images_PT_EN_Null()}
+            {this.cardTwo()}
           </div>
         </div>
       </div>
     );
   };
 
-  MarkLista = () => {
+  listMarker = () => {
     return (
       <div>
         <button
@@ -259,7 +259,7 @@ class App extends Component {
           Marcadores
         </button>
         <Collapse isOpen={this.state.isOpen}>
-          <div>{this.MarcadoresLista()}</div>
+          <div>{this.markersList()}</div>
         </Collapse>
       </div>
     );
@@ -287,20 +287,20 @@ class App extends Component {
     );
   };
 
-  ControlesPlayer = () => {
+  controlsPlayer = () => {
     return (
       <div className="row wrapper-row">
         <div className="play-audio-buttons">
           <Glyphicon
             glyph="glyphicon glyphicon-bookmark icon-highlighter"
             id="icon-marcador"
-            onClick={this.criarMarcador}
+            onClick={this.createMarker}
           />
 
           <p data-tip=" Retroceder 3 seg ">
             <Glyphicon
               glyph="glyphicon glyphicon-repeat left-icon"
-              onClick={this.voltarTresSegundos}
+              onClick={this.back3Seconds}
             />
           </p>
           <ReactTooltip />
@@ -308,7 +308,7 @@ class App extends Component {
           <p data-tip=" Avançar 3 seg ">
             <Glyphicon
               glyph="glyphicon glyphicon-repeat icon-advance"
-              onClick={this.avancarTresSegundos}
+              onClick={this.forward3Seconds}
             />
           </p>
           <ReactTooltip />
@@ -319,7 +319,7 @@ class App extends Component {
           id="menos"
           disabled={this.state.bMenos}
           onClick={() => {
-            this.alterarVelocidadeAudio(false);
+            this.changeAudioSpeed(false);
           }}
         >
           {" "}
@@ -357,7 +357,7 @@ class App extends Component {
     );
   };
 
-  CardUm = () => {
+  cardOne = () => {
     return (
       <div className="col-12 col-md-5 col-lg-5 col-xl-5 card card-portuguese ">
         <div className="card-body">
@@ -373,7 +373,7 @@ class App extends Component {
     );
   };
 
-  Imagens_PT_EN_Null = () => {
+  Images_PT_EN_Null = () => {
     return (
       <div className="col-12 col-md-2 col-lg-2 col-xl-2">
         <div className="row flag">
@@ -383,7 +383,7 @@ class App extends Component {
               alt="img"
               src={img1}
               id="flag-brasil"
-              onClick={this.exibirOcultarTxtPT}
+              onClick={this.showHideTxtPT}
             />
           </div>
           <div className="col-12">
@@ -392,7 +392,7 @@ class App extends Component {
               alt="img"
               src={img2}
               id="flag-eua"
-              onClick={this.exibirOcultarTxtEN}
+              onClick={this.showHideTxtEN}
             />
           </div>
           <div className="col-12">
@@ -401,7 +401,7 @@ class App extends Component {
               alt="img"
               src={img3}
               id="hide-icon"
-              onClick={this.ocultarTodos}
+              onClick={this.hideAll}
             />
           </div>
         </div>
@@ -409,7 +409,7 @@ class App extends Component {
     );
   };
 
-  CardDois = () => {
+  cardTwo = () => {
     return (
       <div className=" col-12 col-md-5 col-lg-5  col-xl-5 card card-english">
         <div className="card-body">
@@ -425,7 +425,7 @@ class App extends Component {
     );
   };
 
-  ControlesPagina = () => {
+  pageControls = () => {
     return (
       <div className="row wrapper-row">
         <div className="col-12 col-md-1">
@@ -437,7 +437,7 @@ class App extends Component {
     );
   };
 
-  MarcadoresLista = () => {
+  markersList = () => {
     const ordenado = this.state.markings.sort(function(anterior, proximo) {
       return anterior.begin - proximo.begin;
     });
@@ -473,7 +473,7 @@ class App extends Component {
                         <a
                           href="#play"
                           onClick={() => {
-                            this.tocarMarcacao(marking.begin);
+                            this.playMarker(marking.begin);
                           }}
                         >
                           <Glyphicon glyph="play" />
@@ -482,7 +482,7 @@ class App extends Component {
                         <a
                           href="#trash"
                           onClick={() => {
-                            this.excluirMarcarao(marking.id);
+                            this.destroyMarker(marking.id);
                           }}
                         >
                           <Glyphicon glyph="trash" />
