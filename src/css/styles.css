@@ -208,6 +208,9 @@
   text-align: center;
   color: #fff;
 }
+.login-form-2 label {
+  color: #fff;
+}
 .login-container form {
   padding: 10%;
 }

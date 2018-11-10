@@ -142,7 +142,7 @@ class Login extends Component {
           </div>
           <div className="form-group">
             <button type="submit" className="btnSubmit">
-              Salvar
+              Login
             </button>
           </div>
         </form>
@@ -212,7 +212,7 @@ class Login extends Component {
           <div className="form-group">
             <div className="form-group">
               <button type="submit" className="btnSubmit">
-                Salvar
+                Cadastrar
               </button>
             </div>
           </div>
