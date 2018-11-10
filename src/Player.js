@@ -97,36 +97,17 @@ class App extends Component {
           void window.scrollTop;
           audio[0].pause();
         }
-        console.log(audio);
-        console.log("*", keycode);
       }
       // ctrl + seta esquerda
-      if (keycode === 37) {
-        audio[0].currentTime -= 3;
-        console.log("**", keycode);
-      }
+      if (keycode === 37) audio[0].currentTime -= 3;
       // ctrl + seta direita
-      if (keycode === 39) {
-        audio[0].currentTime += 3;
-        console.log("***", keycode);
-      }
+      if (keycode === 39) audio[0].currentTime += 3;
       //ctrl + "m"
-      if (keycode === 77) {
-        document.getElementById("icon-marcador").click();
-        console.log("****", keycode);
-      }
+      if (keycode === 77) document.getElementById("icon-marcador").click();
       //"+" ou "="
-      if (keycode === 187) {
-        document.getElementById("mais").click();
-        console.log("****", keycode);
-      }
+      if (keycode === 187) document.getElementById("mais").click();
       //"-"
-      if (keycode === 189) {
-        document.getElementById("menos").click();
-        console.log("****", keycode);
-      }
-
-      //alert(keycode);
+      if (keycode === 189) document.getElementById("menos").click();
     };
   };
 
@@ -147,11 +128,11 @@ class App extends Component {
 
   excluirMarcarao = id => {
     API.deleteMarker(id).then(() => {
-      swal("Sucesso!", "Marcador excluído.", "success",{
-        timer: 2500,
+      swal("Sucesso!", "Marcador excluído.", "success", {
+        timer: 2500
       });
       this.popularListaMarcadores();
-    })
+    });
   };
 
   criarMarcador = () => {
@@ -163,8 +144,8 @@ class App extends Component {
       end: this.state.audio[0].currentTime + 3
     };
     API.addMarker(newMarking).then(() => {
-      swal("Sucesso!", "Marcador adicionado.", "success",{
-        timer: 2500,
+      swal("Sucesso!", "Marcador adicionado.", "success", {
+        timer: 2500
       });
       this.popularListaMarcadores();
     });

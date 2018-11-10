@@ -40,9 +40,6 @@ class Login extends Component {
           timer: 2500
         });
       })
-      .then(() => {
-        console.log(this.state.isAuthorized);
-      });
   };
 
   actionRegister = event => {
