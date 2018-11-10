@@ -169,6 +169,7 @@ class App extends Component {
       setTimeout(() => {
         document.getElementById("markAlert").innerHTML = "";
       }, 3000);
+      this.popularListaMarcadores();
     });
   };
 
