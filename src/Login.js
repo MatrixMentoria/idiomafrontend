@@ -10,8 +10,8 @@ class Login extends Component {
     isAuthorized: false,
     firstName: "",
     lastName: "",
-    email: "aaa@aaa.com",
-    password: "123456",
+    email: "",
+    password: "",
     confirmPassword: ""
   };
 

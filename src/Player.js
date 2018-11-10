@@ -18,21 +18,18 @@ import swal from "sweetalert";
 class App extends Component {
   state = {
     //Info Player
-    audio: document.getElementsByTagName("audio"),
     speed: "",
 
-    //Infos User
+    //Info User
     userId: "",
 
     //Infos Audio
     audioId: "",
     link: "",
     duration: {
-      total: "",
-      hour: "",
-      min: "",
-      seg: ""
+      total: ""
     },
+
     subtitleEN: "",
     subtitlePT: "",
 
@@ -87,27 +84,30 @@ class App extends Component {
     //manipulação do player usando o teclado
     document.onkeydown = event => {
       var keycode = event.keyCode ? event.keyCode : event.which;
-      var audio = document.getElementsByTagName("audio");
-      // ctrl + espaço
-      if (keycode === 32) {
-        if (audio[0].paused) {
-          void window.scrollTop;
-          audio[0].play();
-        } else {
-          void window.scrollTop;
-          audio[0].pause();
-        }
+      switch (keycode) {
+        case 32:
+          if (document.getElementsByTagName("audio")[0].paused)
+            document.getElementsByTagName("audio")[0].play();
+          else document.getElementsByTagName("audio")[0].pause();
+          break;
+        case 37:
+          this.back3Seconds();
+          break;
+        case 39:
+          this.forward3Seconds();
+          break;
+        case 77:
+          this.createMarker();
+          break;
+        case 187:
+          this.changeAudioSpeed(true);
+          break;
+        case 189:
+          this.changeAudioSpeed(false);
+          break;
+        default:
+          break;
       }
-      // ctrl + seta esquerda
-      if (keycode === 37) audio[0].currentTime -= 3;
-      // ctrl + seta direita
-      if (keycode === 39) audio[0].currentTime += 3;
-      //ctrl + "m"
-      if (keycode === 77) document.getElementById("icon-marcador").click();
-      //"+" ou "="
-      if (keycode === 187) document.getElementById("mais").click();
-      //"-"
-      if (keycode === 189) document.getElementById("menos").click();
     };
   };
 
@@ -136,13 +136,24 @@ class App extends Component {
   };
 
   createMarker = () => {
-    if (this.state.audio[0].currentTime < 1) var minimumTime = 0;
-    else minimumTime = this.state.audio[0].currentTime - 1;
+    var minimumTime = 0;
+    var maximumTime = parseInt(this.state.duration.total.split(":")[2], 10);
+
+    if (document.getElementsByTagName("audio")[0].currentTime > 1)
+      minimumTime = document.getElementsByTagName("audio")[0].currentTime - 1;
+
+    if (
+      Math.floor(document.getElementsByTagName("audio")[0].currentTime) <=
+      maximumTime - 3
+    )
+      maximumTime = document.getElementsByTagName("audio")[0].currentTime + 3;
+
     const newMarking = {
       audioId: this.state.audioId,
-      begin: minimumTime,
-      end: this.state.audio[0].currentTime + 3
+      begin: Math.trunc(minimumTime),
+      end: Math.trunc(maximumTime)
     };
+
     API.addMarker(newMarking).then(() => {
       swal("Sucesso!", "Marcador adicionado.", "success", {
         timer: 2500
@@ -152,27 +163,30 @@ class App extends Component {
   };
 
   playMarker = markingBegin => {
-    this.state.audio[0].currentTime = markingBegin;
-    this.state.audio[0].play();
+    document.getElementsByTagName("audio")[0].currentTime = markingBegin;
+    document.getElementsByTagName("audio")[0].play();
     setTimeout(() => {
-      this.state.audio[0].pause();
+      document.getElementsByTagName("audio")[0].pause();
     }, 5000);
   };
 
   changeAudioSpeed = info => {
     info === true
-      ? (this.state.audio[0].playbackRate += 0.1)
-      : (this.state.audio[0].playbackRate -= 0.1);
+      ? (document.getElementsByTagName("audio")[0].playbackRate += 0.1)
+      : (document.getElementsByTagName("audio")[0].playbackRate -= 0.1);
 
-    this.state.audio[0].playbackRate > 2
+    document.getElementsByTagName("audio")[0].playbackRate > 2
       ? this.setState({ bMais: true })
       : this.setState({ bMais: false });
 
-    this.state.audio[0].playbackRate < 0.51
+    document.getElementsByTagName("audio")[0].playbackRate < 0.51
       ? this.setState({ bMenos: true })
       : this.setState({ bMenos: false });
 
-    const speed = this.state.audio[0].playbackRate.toFixed(1).toString();
+    const speed = document
+      .getElementsByTagName("audio")[0]
+      .playbackRate.toFixed(1)
+      .toString();
 
     this.setState({
       speed: speed + "x"
@@ -180,11 +194,11 @@ class App extends Component {
   };
 
   forward3Seconds = () => {
-    this.state.audio[0].currentTime += 3;
+    document.getElementsByTagName("audio")[0].currentTime += 3;
   };
 
   back3Seconds = () => {
-    this.state.audio[0].currentTime -= 3;
+    document.getElementsByTagName("audio")[0].currentTime -= 3;
   };
 
   showHideTxtPT = () => {
@@ -291,12 +305,14 @@ class App extends Component {
     return (
       <div className="row wrapper-row">
         <div className="play-audio-buttons">
-          <Glyphicon
-            glyph="glyphicon glyphicon-bookmark icon-highlighter"
-            id="icon-marcador"
-            onClick={this.createMarker}
-          />
-
+          <p data-tip=" Criar marcador">
+            <Glyphicon
+              glyph="glyphicon glyphicon-bookmark icon-highlighter"
+              id="icon-marcador"
+              onClick={this.createMarker}
+            />
+          </p>
+          <ReactTooltip />
           <p data-tip=" Retroceder 3 seg ">
             <Glyphicon
               glyph="glyphicon glyphicon-repeat left-icon"
@@ -304,7 +320,6 @@ class App extends Component {
             />
           </p>
           <ReactTooltip />
-
           <p data-tip=" Avançar 3 seg ">
             <Glyphicon
               glyph="glyphicon glyphicon-repeat icon-advance"
@@ -334,7 +349,7 @@ class App extends Component {
           id="mais"
           disabled={this.state.bMais}
           onClick={() => {
-            this.alterarVelocidadeAudio(true);
+            this.changeAudioSpeed(true);
           }}
         >
           {" "}
