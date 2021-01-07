@@ -16,7 +16,7 @@
     "react-responsive-modal": "^3.4.0",
     "react-scripts": "1.1.5",
     "react-tooltip": "3.9.0",
-    "serve": "^9.4.0",
+    "serve": "^10.1.2",
     "sweetalert": "^2.1.2"
   },
   "scripts": {
